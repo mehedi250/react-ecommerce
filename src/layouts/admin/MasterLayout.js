@@ -1,14 +1,12 @@
 import React from 'react'
+import { Outlet } from 'react-router-dom';
 import Footer from './Footer'
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
-
 import  '../../assets/admin/css/styles.css';
-import  '../../assets/admin//js/scripts';
-import { Navigate, Route, Routes } from 'react-router-dom';
-import routes from '../../../src/routes/routes'
+
+
 function MasterLayout(props) {
-  console.log(props)
   return (
     <div className="sb-nav-fixed">
       <Navbar />
@@ -18,18 +16,9 @@ function MasterLayout(props) {
           </div>
           <div id="layoutSidenav_content">
             <main>
-              <Routes>
-                {routes.map((route, idx)=>{
-                  return(
-                    route.component &&
-                    <Route key={idx} path={route.path} exect={route.exect}  element={<route.component {...props} />} />
-                  )
-                })}
-                {/* <Navigate to="/admin/dashboard" /> */}
-
-
-              </Routes>
-              {/* {props.children} */}
+              <div className="container-fluid p-4">
+                <Outlet />
+              </div>
             </main>
             <Footer />
           </div>
