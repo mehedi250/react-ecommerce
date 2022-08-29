@@ -6,7 +6,9 @@ function Footer() {
     <footer className="py-4 bg-light mt-auto">
         <div className="container-fluid px-4">
             <div className="d-flex align-items-center justify-content-between small">
-                <div className="text-muted">Copyright &copy; Your Website 2022</div>
+                <div className="text-muted">&copy; 2022 All Rights Reserved
+                  <a className='text-decoration-none' href="https://github.com/mehedi250"> mhshawon250</a>
+                </div>
                 <div>
                     <Link to="#">Privacy Policy</Link>
                     &middot;

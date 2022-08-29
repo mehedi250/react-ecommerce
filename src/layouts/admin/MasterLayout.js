@@ -17,7 +17,7 @@ function MasterLayout(props) {
           <div id="layoutSidenav_content">
             <main>
               <div className="container-fluid p-4">
-                <Outlet />
+                <Outlet /> 
               </div>
             </main>
             <Footer />
