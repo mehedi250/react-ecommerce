@@ -2,7 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 import Dashboard from './components/admin/Dashboard';
 import Profile from './components/admin/Profile';
-import Login from './components/auth/Login';
+import Login from './components/frontend/auth/Login';
+import Register from './components/frontend/auth/Register';
 import Home from './components/frontend/Home';
 import MasterLayout from './layouts/admin/MasterLayout';
 function App(props) {
@@ -11,7 +12,9 @@ function App(props) {
       <Router>
         <Routes>
           <Route path='/login' element={<Login />} />
+          <Route path='/login' element={<Register />} />
           <Route path='/' element={<Home />} />
+
           <Route path='/admin/' element={<MasterLayout/> } >
             <Route path='' element={<Navigate replace to="/admin/dashboard" />}  />
             <Route path='dashboard' element={<Dashboard />} />
