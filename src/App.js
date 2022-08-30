@@ -6,14 +6,18 @@ import Login from './components/frontend/auth/Login';
 import Register from './components/frontend/auth/Register';
 import Home from './components/frontend/Home';
 import MasterLayout from './layouts/admin/MasterLayout';
+import Master from './layouts/frontend/Master';
 function App(props) {
   return (
     <div className="App">
       <Router>
         <Routes>
-          <Route path='/login' element={<Login />} />
-          <Route path='/login' element={<Register />} />
-          <Route path='/' element={<Home />} />
+
+          <Route path='/' element={<Master/> } >
+            <Route path='' element={<Home />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
+          </Route>
 
           <Route path='/admin/' element={<MasterLayout/> } >
             <Route path='' element={<Navigate replace to="/admin/dashboard" />}  />

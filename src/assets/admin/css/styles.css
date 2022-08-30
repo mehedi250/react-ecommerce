@@ -2464,7 +2464,7 @@ textarea.form-control-lg {
   margin-left: -1.5em;
 }
 
-.form-check-input {
+/* .form-check-input {
   width: 1em;
   height: 1em;
   margin-top: 0.25em;
@@ -2479,7 +2479,7 @@ textarea.form-control-lg {
           appearance: none;
   -webkit-print-color-adjust: exact;
           color-adjust: exact;
-}
+} */
 .form-check-input[type=checkbox] {
   border-radius: 0.25em;
 }
