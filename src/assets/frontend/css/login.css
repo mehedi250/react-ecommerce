@@ -1,0 +1,123 @@
+.login-container {
+  /* background-color: #c0c0c0; */
+  background: linear-gradient(45deg, #cacaca, #fff3f3);
+  font-family: 'Varela Round', sans-serif;
+  line-height: 1.5;
+  margin: 0;
+  /* min-block-size: calc(90vh); */
+  min-height: calc(100vh - 56px);
+  padding: 5vmin;
+}
+
+.login-container h2 {
+  font-size: 1.75rem;
+}
+
+.login-container input {
+  background-image: none;
+  border: none;
+  font: inherit;
+  margin: 0;
+  padding: 0;
+  transition: all 0.3s;
+}
+/* 
+svg {
+  height: auto;
+  max-width: 100%;
+  vertical-align: middle;
+} */
+
+/* ---------- ALIGN ---------- */
+.login-container .align {
+  display: grid;
+  place-items: center;
+}
+
+/* ---------- BUTTON ---------- */
+
+.login-container .button {
+  background-color: #33cc77;
+  color: #fff;
+  padding: 0.25em 1.5em;
+  width: 100%;
+}
+
+.login-container .button:focus,
+.login-container .button:hover {
+  background-color: #28ad63;
+}
+
+/* ---------- ICONS ---------- */
+.login-container .icons {
+  display: none;
+}
+
+.login-container .icon {
+  fill: currentcolor;
+  display: inline-block;
+  height: 1em;
+  width: 1em;
+}
+
+/* ---------- LOGIN ---------- */
+.login-container .login {
+  width: 400px;
+}
+
+.login-container .login__header {
+  background-color: #f95252;
+  border-top-left-radius: 1.25em;
+  border-top-right-radius: 1.25em;
+  color: #fff;
+  padding: 1.25em 1.625em;
+}
+
+.login-container .login__header :first-child {
+  margin-top: 0;
+}
+
+.login-container .login__header :last-child {
+  margin-bottom: 0;
+}
+
+.login-container .login h2 .icon {
+  margin-right: 14px;
+}
+
+.login-container .login__form {
+  background-color: #fff;
+  border-bottom-left-radius: 1.25em;
+  border-bottom-right-radius: 1.25em;
+  color: #777;
+  display: grid;
+  gap: 0.875em;
+  padding: 1.25em 1.625em;
+}
+
+.login-container .login input {
+  border-radius: 0.1875em;
+}
+
+.login-container .login input[type="email"], .login-container .login input[type="text"],
+.login-container .login input[type="password"] {
+  background-color: #eee;
+  color: #777;
+  padding: 0.25em 0.625em;
+  width: 100%;
+}
+
+.login-container .login input[type="submit"] {
+  display: block;
+  margin: 0 auto;
+}
+
+.login {
+  animation: bounce2 2s ease;
+}
+@keyframes bounce2 {
+	0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+	40% {transform: translateY(-60px);}
+	60% {transform: translateY(-30px);}
+}
+
