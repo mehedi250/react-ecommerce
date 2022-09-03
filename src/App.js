@@ -9,7 +9,7 @@ import MasterLayout from './layouts/admin/MasterLayout';
 import Master from './layouts/frontend/Master';
 function App(props) {
   return (
-    <div className="App">
+    <div className="App" style={{minHeight: '100vh'}}>
       <Router>
         <Routes>
 
