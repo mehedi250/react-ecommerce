@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react'
 import { useState } from 'react'
 
@@ -6,11 +7,12 @@ function Register() {
     name: '',
     email: '',
     password: '',
-    confirm_password: ''
+    password_confirmation: '',
+    error_list: []
   })
 
   const handleInput = (e) =>{
-    // e.presist();
+    e.persist();
     setRegister({...registerInput, [e.target.name]: e.target.value})
   }
 
@@ -20,8 +22,22 @@ function Register() {
       name: registerInput.name,
       email: registerInput.email,
       password: registerInput.password,
-      confirm_password: registerInput.confirm_password
+      password_confirmation: registerInput.password_confirmation
     }
+
+    axios.get('/sanctum/csrf-cookie').then(response => {
+      axios.post('/api/register', data).then(res => {
+        if(res.data.success){
+
+        }else{
+          if(res.data.status === 'validation-error'){
+            setRegister({...registerInput, error_list: res.data.errors })
+          }
+        }
+      });
+    });
+
+    
     
   }
   return (
@@ -42,21 +58,25 @@ function Register() {
             <div>
               <label>Full Name</label>
               <input type="text" name='name' onChange={handleInput} value={registerInput.name} placeholder="Name"/>
+              <span className='text-danger'>{registerInput.error_list.name}</span>
             </div>
 
             <div>
-              <label>E-mail address</label>
+              <label>Email</label>
               <input type="email" name='email' onChange={handleInput} value={registerInput.email} placeholder="Email"/>
+              <span className='text-danger'>{registerInput.error_list.email}</span>
             </div>
 
             <div>
               <label>Password</label>
               <input type="password" name='password' onChange={handleInput} value={registerInput.password} placeholder="Password"/>
+              <span className='text-danger'>{registerInput.error_list.password}</span>
             </div>
 
             <div>
               <label>Confirm Password</label>
-              <input type="password" name='confirm_password' onChange={handleInput} value={registerInput.confirm_password} placeholder="Confirm password"/>
+              <input type="password" name='password_confirmation' onChange={handleInput} value={registerInput.password_confirmation} placeholder="Confirm password"/>
+              <span className='text-danger'>{registerInput.error_list.password_confirmation}</span>
             </div>
 
             <div>
