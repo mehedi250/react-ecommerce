@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React from 'react'
 import { useState } from 'react'
+import { registerApi } from '../../../service/serviceApi';
 
 function Register() {
   const [registerInput, setRegister] = useState({
@@ -24,18 +25,33 @@ function Register() {
       password: registerInput.password,
       password_confirmation: registerInput.password_confirmation
     }
+    // console.log(res)
+    registerApi(data).then((response) => {
+      console.log(response)
+      if(response.data.success){
 
-    axios.get('/sanctum/csrf-cookie').then(response => {
-      axios.post('/api/register', data).then(res => {
-        if(res.data.success){
-
-        }else{
-          if(res.data.status === 'validation-error'){
-            setRegister({...registerInput, error_list: res.data.errors })
-          }
-        }
-      });
+      }
+      else{
+          if(response.data.status === 'validation-error'){
+                  setRegister({...registerInput, error_list: response.data.errors })
+           }
+      }
+    })
+    .catch(error=>{
+        console.log("LandingPop", error)
     });
+
+    // axios.get('/sanctum/csrf-cookie').then(response => {
+    //   axios.post('/api/register', data).then(res => {
+    //     if(res.data.success){
+
+    //     }else{
+    //       if(res.data.status === 'validation-error'){
+    //         setRegister({...registerInput, error_list: res.data.errors })
+    //       }
+    //     }
+    //   });
+    // });
 
     
     
