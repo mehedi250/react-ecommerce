@@ -9,7 +9,8 @@ function Register() {
     email: '',
     password: '',
     password_confirmation: '',
-    error_list: []
+    error_list: [],
+    isLoading: false
   })
 
   const handleInput = (e) =>{
@@ -19,6 +20,7 @@ function Register() {
 
   const registerSubmit = (e) =>{
     e.preventDefault();
+    setRegister({...registerInput, isLoading: true})
     const data = {
       name: registerInput.name,
       email: registerInput.email,

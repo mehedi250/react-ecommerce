@@ -1,6 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 function Login() {
+  const [loginInput, setloginInput] = useState({
+    email: '',
+    password: '',
+    error_list: [],
+    isLoading: false
+  })
+
+  const handleInput = (e) =>{
+    e.persist();
+    setloginInput({...loginInput, [e.target.name]: e.target.value})
+  }
+  const handleLogin = (e) =>{
+    e.preventDefault();
+    setloginInput({...loginInput, isLoading: true});
+    const data = {
+      email: loginInput.email,
+      password: loginInput.password
+    }
+  }
   return (
     <>
       <div className="login-container">
@@ -13,15 +32,17 @@ function Login() {
               </h2>
             </header>
 
-            <form action="#" className="login__form" method="POST">
+            <form onSubmit={handleLogin} className="login__form">
               <div>
-                <label for="email">E-mail address</label>
-                <input type="email" id="email" name="email" placeholder="mail@address.com"/>
+                <label for="email">Email</label>
+                <input onChange={handleInput} value={loginInput.email} type="email" id="email" name="email"  placeholder="Email"/>
+                <span className='text-danger'>{loginInput.error_list.email}</span>
               </div>
 
               <div>
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="password"/>
+                <input onChange={handleInput} value={loginInput.password} type="password" id="password" name="password" placeholder="Password"/>
+                <span className='text-danger'>{loginInput.error_list.password}</span>
               </div>
 
               <div>
