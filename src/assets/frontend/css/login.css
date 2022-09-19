@@ -85,6 +85,8 @@ svg {
 }
 
 .login-container .login__form {
+  position: relative;
+  overflow: hidden;
   background-color: #fff;
   border-bottom-left-radius: 1.25em;
   border-bottom-right-radius: 1.25em;
@@ -119,4 +121,14 @@ svg {
 	40% {transform: translateY(-60px);}
 	60% {transform: translateY(-30px);}
 }
+
+.from-submit-loader{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  background: rgba(0, 5, 68, 0.089);
+  z-index: 2;
+}
+
 

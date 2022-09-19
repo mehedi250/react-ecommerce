@@ -1,9 +1,13 @@
 import axios from 'axios';
 import React from 'react'
 import { useState } from 'react'
-import { registerApi } from '../../../service/serviceApi';
+import { useNavigate } from 'react-router-dom';
+import swal from 'sweetalert';
+
+// import { registerApi } from '../../../service/serviceApi';
 
 function Register() {
+  const navigate = useNavigate()
   const [registerInput, setRegister] = useState({
     name: '',
     email: '',
@@ -28,32 +32,36 @@ function Register() {
       password_confirmation: registerInput.password_confirmation
     }
     // console.log(res)
-    registerApi(data).then((response) => {
-      console.log(response)
-      if(response.data.success){
+    // registerApi(data).then((response) => {
+    //   console.log(response)
+    //   if(response.data.success){
 
-      }
-      else{
-          if(response.data.status === 'validation-error'){
-                  setRegister({...registerInput, error_list: response.data.errors })
-           }
-      }
-    })
-    .catch(error=>{
-        console.log("LandingPop", error)
-    });
-
-    // axios.get('/sanctum/csrf-cookie').then(response => {
-    //   axios.post('/api/register', data).then(res => {
-    //     if(res.data.success){
-
-    //     }else{
-    //       if(res.data.status === 'validation-error'){
-    //         setRegister({...registerInput, error_list: res.data.errors })
-    //       }
+    //   }
+    //   else{
+    //     if(response.data.status === 'validation-error'){
+    //       setRegister({...registerInput, error_list: response.data.errors })
     //     }
-    //   });
+    //   }
+    // })
+    // .catch(error=>{
+    //     console.log("LandingPop", error)
     // });
+
+    axios.get('/sanctum/csrf-cookie').then(response => {
+      axios.post('/api/register', data).then(res => {
+        if(res.data.success){
+          localStorage.setItem('auth_token', res.data.token);
+          localStorage.setItem('auth_name', res.data.username);
+          swal('Success', res.data.message, 'success');
+          navigate('/');
+        }else{
+          if(res.data.status === 'validation-error'){
+            setRegister({...registerInput, error_list: res.data.errors })
+          }
+        }
+        // setRegister({...registerInput, isLoading: false})
+      });
+    });
 
     
     
@@ -100,7 +108,16 @@ function Register() {
             <div>
               <input className="button" type="submit" value="Register"/>
             </div>
+
+            {registerInput.isLoading && 
+              <div className="from-submit-loader text-center">
+                <div className="spinner-border text-dark" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            }  
           </form>
+          
 
         </div>
 
