@@ -53,7 +53,9 @@ function Register() {
           localStorage.setItem('auth_token', res.data.token);
           localStorage.setItem('auth_name', res.data.username);
           swal('Success', res.data.message, 'success');
-          navigate('/');
+          setTimeout(() => {
+            navigate('/');
+          }, "1500");
         }else{
           if(res.data.status === 'validation-error'){
             setRegister({...registerInput, error_list: res.data.errors })

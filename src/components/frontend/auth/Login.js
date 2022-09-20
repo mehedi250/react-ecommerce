@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
-
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import swal from 'sweetalert';
 function Login() {
+  const navigate = useNavigate()
   const [loginInput, setloginInput] = useState({
     email: '',
     password: '',
@@ -19,6 +22,29 @@ function Login() {
       email: loginInput.email,
       password: loginInput.password
     }
+    
+    axios.get('/sanctum/csrf-cookie').then(response => {
+      axios.post('/api/login', data).then(res => {
+        if(res.data.success){
+          localStorage.setItem('auth_token', res.data.token);
+          localStorage.setItem('auth_name', res.data.username);
+          swal('Success', res.data.message, 'success');
+          setTimeout(() => {
+            navigate('/');
+          }, "1500");
+          
+        }else{
+          if(res.data.status === 'validation-error'){
+            setloginInput({...loginInput, error_list: res.data.errors })
+          }
+          else{
+            swal('Error', res.data.message, 'error');
+            setloginInput({...loginInput, isLoading: false, error_list: []})
+          }
+        }
+        // setloginInput({...loginInput, isLoading: false})
+      });
+    });
   }
   return (
     <>
@@ -34,13 +60,13 @@ function Login() {
 
             <form onSubmit={handleLogin} className="login__form">
               <div>
-                <label for="email">Email</label>
-                <input onChange={handleInput} value={loginInput.email} type="email" id="email" name="email"  placeholder="Email"/>
+                <label>Email</label>
+                <input onChange={handleInput} value={loginInput.email} type="email" name="email"  placeholder="Email"/>
                 <span className='text-danger'>{loginInput.error_list.email}</span>
               </div>
 
               <div>
-                <label for="password">Password</label>
+                <label>Password</label>
                 <input onChange={handleInput} value={loginInput.password} type="password" id="password" name="password" placeholder="Password"/>
                 <span className='text-danger'>{loginInput.error_list.password}</span>
               </div>
@@ -48,11 +74,18 @@ function Login() {
               <div>
                 <input className="button" type="submit" value="Sign In"/>
               </div>
+              {loginInput.isLoading && 
+                <div className="from-submit-loader text-center">
+                  <div className="spinner-border text-dark" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              }  
             </form>
 
           </div>
 
-          <svg xmlns="http://www.w3.org/2000/svg" class="icons">
+          <svg xmlns="http://www.w3.org/2000/svg" className="icons">
 
             <symbol id="icon-lock" viewBox="0 0 448 512">
               <path d="M400 224h-24v-72C376 68.2 307.8 0 224 0S72 68.2 72 152v72H48c-26.5 0-48 21.5-48 48v192c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V272c0-26.5-21.5-48-48-48zm-104 0H152v-72c0-39.7 32.3-72 72-72s72 32.3 72 72v72z" />
