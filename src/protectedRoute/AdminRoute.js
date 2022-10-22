@@ -31,15 +31,28 @@ function AdminRoute(props) {
       return Promise.reject(err);
     });
 
+    axios.interceptors.response.use(function (response){
+        return response;
+      }, function (error){
+        if(error.response.status === 403){
+          swal('Forbedden', error.response.data.message, 'warning');
+          navigate('/');
+        }
+        else if(error.response.status === 404){
+          swal('404 Error', error.response.data.message, 'warning');
+          navigate('/404');
+        }
+        return Promise.reject(error);
+      }
+    );
+
     if(loading){
       return <div className="text-center py-3"><h1>Loading...</h1></div>
     }
 
     return ( 
       <>
-      {(authenticate) ? <MasterLayout {...props}/> : 
-      navigate('/login')
-      }
+      {(authenticate) ? <MasterLayout {...props}/> : navigate('/login') }
       </>
     )
 }
