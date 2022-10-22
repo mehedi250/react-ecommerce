@@ -7,8 +7,9 @@ import Profile from './components/admin/Profile';
 import Login from './components/frontend/auth/Login';
 import Register from './components/frontend/auth/Register';
 import Home from './components/frontend/Home';
-import MasterLayout from './layouts/admin/MasterLayout';
+
 import Master from './layouts/frontend/Master';
+import AdminRoute from './protectedRoute/AdminRoute';
 
 axios.defaults.baseURL = 'http://127.0.0.1:8000';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -22,6 +23,7 @@ axios.interceptors.request.use(function(config){
 }) 
 
 function App(props) {
+  
   return (
     <div className="App" style={{minHeight: '100vh'}}>
       <Router>
@@ -33,7 +35,8 @@ function App(props) {
             <Route path='/register' element={<Register />} />
           </Route>
 
-          <Route path='/admin/' element={<MasterLayout/> } >
+          {/* <Route path='/admin/' element={(localStorage.getItem('auth_token'))?<AdminRoute/>:<Navigate replace to="/login" />} > */}
+          <Route path='/admin/' element={<AdminRoute/>} >
             <Route path='' element={<Navigate replace to="/admin/dashboard" />}  />
             <Route path='dashboard' element={<Dashboard />} />
             <Route path='profile' element={<Profile />} />
