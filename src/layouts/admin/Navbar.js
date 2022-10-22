@@ -1,9 +1,24 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios';
+import swal from 'sweetalert';
 
 function Navbar() {
     const collups=()=>{
         document.body.classList.toggle('sb-sidenav-toggled');
+    }
+
+    const navigate = useNavigate();
+    const handleLogout = (e) =>{
+        e.preventDefault();
+        axios.post('/api/logout').then(res => {
+            if(res.data.success){
+                localStorage.removeItem('auth_token');
+                localStorage.removeItem('auth_name');
+                swal('Success', res.data.message, 'success');
+                navigate('/login');
+            }
+        });
     }
   return (
     <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark shadow">
@@ -23,7 +38,7 @@ function Navbar() {
                     <li><Link className="dropdown-item" to="#">Settings</Link></li>
                     <li><Link className="dropdown-item" to="#">Activity Log</Link></li>
                     <li><hr className="dropdown-divider" /></li>
-                    <li><Link className="dropdown-item" to="/login">Logout</Link></li>
+                    <li><Link className="dropdown-item" to="#" onClick={handleLogout}>Logout</Link></li>
                 </ul>
             </li>
         </ul>
