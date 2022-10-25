@@ -1,0 +1,31 @@
+.error-container{
+    position: relative;
+    min-height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
+}
+
+.xy-center{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.error-404 h2{
+    color: rgb(0, 0, 56);
+    font-size: 3rem;
+}
+
+.error-404 p{
+    color: rgba(0, 0, 56, 0.781);
+    font-size: 1.5rem;
+}
+
+.error-404 .btn-primary{
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+}
+/* #0d6efd */
+.error-404 .btn-primary:hover{
+    box-shadow: #0d6dfd8a 0px 22px 70px 4px;
+}

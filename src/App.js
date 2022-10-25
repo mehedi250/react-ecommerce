@@ -11,6 +11,7 @@ import Home from './components/frontend/Home';
 import Master from './layouts/frontend/Master';
 import AdminRoute from './protectedRoute/AdminRoute';
 import Page404 from './layouts/error/Page404';
+import Category from './components/admin/Category';
 
 axios.defaults.baseURL = 'http://127.0.0.1:8000';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -41,6 +42,7 @@ function App(props) {
             <Route path='' element={<Navigate replace to="/admin/dashboard" />}  />
             <Route path='dashboard' element={<Dashboard />} />
             <Route path='profile' element={<Profile />} />
+            <Route path='category' element={<Category />} />
           </Route>
           <Route path='*' element={<Page404 />} />
         </Routes>
