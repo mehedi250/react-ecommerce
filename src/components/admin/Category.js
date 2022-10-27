@@ -22,6 +22,7 @@ function Category() {
 
     const handleSubmit = (e) =>{
         e.preventDefault();
+        setCatagoryInput({...catagoryInput, error_list: []})
         const data = {
             slug: catagoryInput.slug,
             name: catagoryInput.name,
@@ -31,14 +32,16 @@ function Category() {
             meta_keywords: catagoryInput.meta_keywords,
             meta_description: catagoryInput.meta_description
         }
-        // console.log(data)
-
         axios.post('/api/admin/catagory-store', data).then(res => {
             if(res.data.success){
-            
-            }else{
+                if(res.data.status === 'success'){
+                    document.getElementById("category-form").reset();
+                    swal('Success', res.data.message, 'success');
+                }
+            }
+            else{
                 if(res.data.status === 'validation-error'){
-            
+                    setCatagoryInput({...catagoryInput, error_list: res.data.errors})
                 }
                 else{
                     swal('Error', res.data.message, 'error');
@@ -53,8 +56,8 @@ function Category() {
 
   return (
     <div className="container-fluid px-4">
-        <h1>Add Catagory</h1>
-        <form onSubmit={handleSubmit}>
+        <h1>Add Category</h1>
+        <form onSubmit={handleSubmit} id="category-form">
             <ul className="nav nav-tabs" id="myTab" role="tablist">
                 <li className="nav-item" role="presentation">
                     <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
@@ -74,6 +77,7 @@ function Category() {
                     <div className="form-group mb-3">
                         <label>Name</label>
                         <input type="text" name="name" onChange={handleInput} value={catagoryInput.name} className="form-control" />
+                        <span className='text-danger'>{catagoryInput.error_list.name}</span>
                     </div>
                     <div className="form-group mb-3">
                         <label>Description</label> 
