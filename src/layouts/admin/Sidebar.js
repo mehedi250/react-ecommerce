@@ -11,7 +11,7 @@ function Sidebar() {
                     </Link>
                     <Link className="nav-link" to='/admin/category'>
                         <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
-                        Catagory
+                        Category
                     </Link>
                     <div className="sb-sidenav-menu-heading">Interface</div>
                     <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
