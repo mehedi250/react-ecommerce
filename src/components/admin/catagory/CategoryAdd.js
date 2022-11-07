@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import axios from 'axios';
+import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
+import { categoryInsertApi } from '../../../service/serviceApi';
 
-function Category() {
-    const [categoryInput, setCategoryInput] = useState({
+function CategoryAdd() {
+    const initialData = {
         slug: '',
         name: '',
         description: '',
@@ -12,8 +13,8 @@ function Category() {
         meta_keywords: '',
         meta_description: '',
         error_list: []
-
-    })
+    }
+    const [categoryInput, setCategoryInput] = useState(initialData)
 
     const handleInput = (e) =>{
         e.persist();
@@ -32,11 +33,12 @@ function Category() {
             meta_keywords: categoryInput.meta_keywords,
             meta_description: categoryInput.meta_description
         }
-        axios.post('/api/admin/catagory-store', data).then(res => {
+        // axios.post('/api/admin/catagory-store', data).then(res => {
+        categoryInsertApi(data).then(res => {
             if(res.data.success){
                 if(res.data.status === 'success'){
-                    document.getElementById("category-form").reset();
                     swal('Success', res.data.message, 'success');
+                    setCategoryInput(initialData)
                 }
             }
             else{
@@ -48,15 +50,19 @@ function Category() {
                 }
             }
         });
-  
-
     }
-
-
 
   return (
     <div className="container-fluid px-4">
-        <h1>Add Category</h1>
+        <div className='d-flex'>
+            <div>
+                <h2>Add Category</h2>
+            </div>
+            <div className='ms-auto'>
+                <Link to='/admin/category' className='btn btn-primary '>Back</Link>
+            </div>
+        </div>
+       
         <form onSubmit={handleSubmit} id="category-form">
             <ul className="nav nav-tabs" id="myTab" role="tablist">
                 <li className="nav-item" role="presentation">
@@ -114,4 +120,4 @@ function Category() {
   )
 }
 
-export default Category
+export default CategoryAdd
