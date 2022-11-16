@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
-import { categoryInsertApi } from '../../../service/serviceApi';
+import { categoryFindApi, categoryUpdateApi } from '../../../service/serviceApi';
 
-function CategoryAdd() {
+function CategoryUpdate(props) {
+    const params = useParams();
     const navigate = useNavigate();
+
     const initialData = {
         slug: '',
         name: '',
@@ -15,7 +17,25 @@ function CategoryAdd() {
         meta_description: '',
         error_list: []
     }
-    const [categoryInput, setCategoryInput] = useState(initialData)
+    const [categoryInput, setCategoryInput] = useState(initialData);
+    const [error_list, setErrorList] = useState([])
+
+    useEffect(()=> {
+        getCurrentData(params.id);
+    }, [params.id])
+
+    const getCurrentData = (id) =>{
+        categoryFindApi(id, []).then(res => {
+            if(res.data.success){
+                if(res.data.status === 'success'){
+                    setCategoryInput(res.data.data);
+                }
+            }
+            else{
+                swal('Error', res.data.message, 'error');
+            }
+        });
+    }
 
     const handleInput = (e) =>{
         e.persist();
@@ -34,17 +54,17 @@ function CategoryAdd() {
             meta_keywords: categoryInput.meta_keywords,
             meta_description: categoryInput.meta_description
         }
-        // axios.post('/api/admin/catagory-store', data).then(res => {
-        categoryInsertApi(data).then(res => {
+
+        categoryUpdateApi(params.id, data).then(res => {
             if(res.data.success){
                 if(res.data.status === 'success'){
                     swal('Success', res.data.message, 'success');
-                    navigate('/admin/category')
+                    navigate('/admin/category');
                 }
             }
             else{
                 if(res.data.status === 'validation-error'){
-                    setCategoryInput({...categoryInput, error_list: res.data.errors})
+                    setErrorList(res.data.errors)
                 }
                 else{
                     swal('Error', res.data.message, 'error');
@@ -57,7 +77,7 @@ function CategoryAdd() {
     <div className="container-fluid px-4">
         <div className='d-flex'>
             <div>
-                <h2>Add Category</h2>
+                <h2>Update Category</h2>
             </div>
             <div className='ms-auto'>
                 <Link to='/admin/category' className='btn btn-primary '>Back</Link>
@@ -72,24 +92,23 @@ function CategoryAdd() {
                 <li className="nav-item" role="presentation">
                     <button className="nav-link" id="seo-tags-tab" data-bs-toggle="tab" data-bs-target="#seo-tags" type="button" role="tab" aria-controls="seo-tags" aria-selected="false">SEO Tags</button>
                 </li>
-        
             </ul>
             <div className="tab-content" id="myTabContent">
                 <div className="tab-pane card-body border p-4 fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div className="form-group mb-3">
                         <label>Slug</label>
                         <input type="text" name="slug" onChange={handleInput} value={categoryInput.slug} className="form-control" />
-                        <span className='text-danger'>{categoryInput.error_list.slug}</span>
+                        <span className='text-danger'>{error_list.slug}</span>
                     </div>
                     <div className="form-group mb-3">
                         <label>Name</label>
                         <input type="text" name="name" onChange={handleInput} value={categoryInput.name} className="form-control" />
-                        <span className='text-danger'>{categoryInput.error_list.name}</span>
+                        <span className='text-danger'>{error_list.name}</span>
                     </div>
                     <div className="form-group mb-3">
                         <label>Description</label> 
                         <textarea name="description" onChange={handleInput} value={categoryInput.description} className="form-control"></textarea>
-                        <span className='text-danger'>{categoryInput.error_list.description}</span>
+                        <span className='text-danger'>{error_list.description}</span>
                     </div>
                     <div className="form-group mb-3">
                         <label>Status</label>
@@ -100,25 +119,24 @@ function CategoryAdd() {
                     <div className="form-group mb-3">
                         <label>Meta Title</label>
                         <input type="text" name="meta_title" value={categoryInput.meta_title} onChange={handleInput} className="form-control" />
-                        <span className='text-danger'>{categoryInput.error_list.meta_title}</span>
+                        <span className='text-danger'>{error_list.meta_title}</span>
                     </div>
                     <div className="form-group mb-3">
                         <label>Meta Keywords</label>
                         <textarea name="meta_keywords" value={categoryInput.meta_keywords} onChange={handleInput} className="form-control"></textarea>
-                        <span className='text-danger'>{categoryInput.error_list.meta_keywords}</span>
+                        <span className='text-danger'>{error_list.meta_keywords}</span>
                     </div>
                     <div className="form-group mb-3">
                         <label>Meta Description</label>
                         <textarea name="meta_description" value={categoryInput.meta_description} onChange={handleInput} className="form-control" ></textarea>
-                        <span className='text-danger'>{categoryInput.error_list.meta_description}</span>
+                        <span className='text-danger'>{error_list.meta_description}</span>
                     </div>
                 </div>
             </div>
-
-            <button type='submit' className='btn btn-primary px-4 my-4 float-end'>Submit</button>
+            <button type='submit' className='btn btn-primary px-4 my-4 float-end'>Update</button>
         </form>
     </div>
   )
 }
 
-export default CategoryAdd
+export default CategoryUpdate

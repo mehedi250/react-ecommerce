@@ -70,7 +70,7 @@ function Category() {
           <td>{item.name}</td>
           <td>{item.slug}</td>
           <td className='text-center'>
-            <Link to='/admin/category-add' className='btn btn-info btn-sm mx-2'>Edit</Link>
+            <Link to={`/admin/category-update/${item.id}`} className='btn btn-info btn-sm mx-2'>Edit</Link>
             <button className='btn btn-danger btn-sm mx-2' onClick={(e)=>handleDelete(e, item.id)}>Delete</button>
           </td>
         </tr>
