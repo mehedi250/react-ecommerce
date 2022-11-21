@@ -3,12 +3,18 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import { categoryDeleteApi, categoryListApi } from '../../../service/serviceApi';
+import Modal from '../../elements/Modal';
+import CategoryAddForm from './CategoryAddForm';
+import CategoryUpdateForm from './CategoryUpdateForm';
+
 
 
 function Category() {
-
   const [isLoading, setIsLoading] = useState(true);
   const [categoryList, setCategoryList] = useState([]);
+  const [show, setShow] = useState(false);
+  const [categoryId, setCategoryId] = useState(0);
+
 
   const getCategoryList = () =>{
     categoryListApi().then(res => {
@@ -62,6 +68,17 @@ function Category() {
     getCategoryList();
   }, []);
 
+  const onClose = (status = 'close') =>{
+    if(status == 'success'){
+      getCategoryList();
+    }
+    setShow(false);
+  }
+
+  const handleModal = (isShow=false, newCategoryId = 0) =>{
+    setCategoryId(newCategoryId);
+    setShow(isShow);
+  }
   const renderTableData = () =>{
     let view=[];
     categoryList.map((item) =>{
@@ -69,8 +86,15 @@ function Category() {
         <tr key={item.id}>
           <td>{item.name}</td>
           <td>{item.slug}</td>
+          <td>
+            {(item.status == 1)?
+            <span className="m-badge m-badge-success">Active</span>
+            :
+            <span className="m-badge m-badge-danger">Inactive</span>
+            }
+            </td>
           <td className='text-center'>
-            <Link to={`/admin/category-update/${item.id}`} className='btn btn-info btn-sm mx-2'>Edit</Link>
+            <button className='btn btn-info btn-sm mx-2' onClick={()=>handleModal(true, item.id)}>Edit</button>
             <button className='btn btn-danger btn-sm mx-2' onClick={(e)=>handleDelete(e, item.id)}>Delete</button>
           </td>
         </tr>
@@ -88,7 +112,7 @@ function Category() {
       return view;
     }
   }
-  
+  console.log(categoryId)
 
   return (
     <div className="container-fluid px-4">
@@ -97,7 +121,7 @@ function Category() {
               <h2>Category List</h2>
           </div>
           <div className='ms-auto'>
-              <Link to='/admin/category-add' className='btn btn-primary'>Add New</Link>
+              <button to='/admin/category-add' onClick={()=>handleModal(true, 0)} className='btn btn-primary'>Add New</button>
           </div>
       </div>
       <hr />
@@ -107,6 +131,7 @@ function Category() {
             <tr>
               <th scope="col">Name</th>
               <th scope="col">Slug</th>
+              <th scope="col">status</th>
               <th scope="col" className='text-center'>Action</th>
             </tr>
           </thead>
@@ -125,6 +150,14 @@ function Category() {
           </tbody>
         </table>
       </div>
+      <Modal title={ categoryId != 0 ?'Update Category': 'Add Catehory'} onClose={onClose} show={show}>
+      { categoryId != 0 ?
+        <CategoryUpdateForm onClose={onClose} categoryId = {categoryId} />
+        :
+        <CategoryAddForm onClose={onClose} />
+      }
+        
+      </Modal>
     </div>
   )
 }

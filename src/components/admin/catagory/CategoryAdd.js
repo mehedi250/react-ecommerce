@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
 import { categoryInsertApi } from '../../../service/serviceApi';
+import Switch from '../../elements/Switch';
 
 function CategoryAdd() {
     const navigate = useNavigate();
@@ -9,17 +10,21 @@ function CategoryAdd() {
         slug: '',
         name: '',
         description: '',
-        status: '',
         meta_title: '',
         meta_keywords: '',
         meta_description: '',
         error_list: []
     }
     const [categoryInput, setCategoryInput] = useState(initialData)
+    const [status, setStatus] = useState(true);
 
     const handleInput = (e) =>{
         e.persist();
         setCategoryInput({...categoryInput, [e.target.name]: e.target.value})
+    }
+
+    const handleStatus = () =>{
+        setStatus(!status)
     }
 
     const handleSubmit = (e) =>{
@@ -29,7 +34,7 @@ function CategoryAdd() {
             slug: categoryInput.slug,
             name: categoryInput.name,
             description: categoryInput.description,
-            status: categoryInput.status,
+            status: status,
             meta_title: categoryInput.meta_title,
             meta_keywords: categoryInput.meta_keywords,
             meta_description: categoryInput.meta_description
@@ -92,8 +97,14 @@ function CategoryAdd() {
                         <span className='text-danger'>{categoryInput.error_list.description}</span>
                     </div>
                     <div className="form-group mb-3">
-                        <label>Status</label>
-                        <input type="checkbox" name="status" value={categoryInput.status} onChange={handleInput} />  Status 0=shown/1=hidden
+                        <div className="d-flex">
+                            <div>
+                                <label>Status</label>
+                            </div>
+                            <div className='ps-4'>
+                                <Switch isOn={status} handleToggle={handleStatus} onColor='#32c832'/> 
+                            </div>  
+                        </div>
                     </div>
                 </div>
                 <div className="tab-pane card-body border p-4 fade" id="seo-tags" role="tabpanel" aria-labelledby="seo-tags-tab">
