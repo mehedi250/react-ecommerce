@@ -4,6 +4,7 @@ import Footer from './Footer'
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
 import  '../../assets/admin/css/styles.css';
+import  '../../assets/admin/css/custom_style.css';
 
 
 function MasterLayout(props) {

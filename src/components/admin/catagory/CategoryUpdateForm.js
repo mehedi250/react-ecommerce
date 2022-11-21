@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams, useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
 import { categoryFindApi, categoryUpdateApi } from '../../../service/serviceApi';
 import Switch from '../../elements/Switch';
 
-function CategoryUpdate(props) {
-    const params = useParams();
-    const navigate = useNavigate();
-
+function CategoryUpdateForm(props) {
     const initialData = {
         slug: '',
         name: '',
@@ -22,8 +18,8 @@ function CategoryUpdate(props) {
     const [status, setStatus] = useState(true);
 
     useEffect(()=> {
-        getCurrentData(params.id);
-    }, [params.id])
+        getCurrentData(props.categoryId);
+    }, [props.categoryId])
 
     const handleStatus = () =>{
         setStatus(!status)
@@ -61,11 +57,11 @@ function CategoryUpdate(props) {
             meta_description: categoryInput.meta_description
         }
 
-        categoryUpdateApi(params.id, data).then(res => {
+        categoryUpdateApi(props.categoryId, data).then(res => {
             if(res.data.success){
                 if(res.data.status === 'success'){
                     swal('Success', res.data.message, 'success');
-                    navigate('/admin/category');
+                    props.onClose('success')
                 }
             }
             else{
@@ -80,16 +76,14 @@ function CategoryUpdate(props) {
     }
 
   return (
-    <div className="container-fluid px-4">
-        <div className='d-flex'>
-            <div>
-                <h2>Update Category</h2>
-            </div>
-            <div className='ms-auto'>
-                <Link to='/admin/category' className='btn btn-primary '>Back</Link>
+    <>
+        <div className="text-center">
+            <div className="text-center">
+                <div class="spinner-grow mx-auto" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>    
             </div>
         </div>
-       
         <form onSubmit={handleSubmit} id="category-form">
             <ul className="nav nav-tabs" id="myTab" role="tablist">
                 <li className="nav-item" role="presentation">
@@ -100,7 +94,7 @@ function CategoryUpdate(props) {
                 </li>
             </ul>
             <div className="tab-content" id="myTabContent">
-                <div className="tab-pane card-body border p-4 fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div className="tab-pane py-4 fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div className="form-group mb-3">
                         <label>Slug</label>
                         <input type="text" name="slug" onChange={handleInput} value={categoryInput.slug} className="form-control" />
@@ -127,7 +121,7 @@ function CategoryUpdate(props) {
                         </div>
                     </div>
                 </div>
-                <div className="tab-pane card-body border p-4 fade" id="seo-tags" role="tabpanel" aria-labelledby="seo-tags-tab">
+                <div className="tab-pane py-4 fade" id="seo-tags" role="tabpanel" aria-labelledby="seo-tags-tab">
                     <div className="form-group mb-3">
                         <label>Meta Title</label>
                         <input type="text" name="meta_title" value={categoryInput.meta_title} onChange={handleInput} className="form-control" />
@@ -147,8 +141,8 @@ function CategoryUpdate(props) {
             </div>
             <button type='submit' className='btn btn-primary px-4 my-4 float-end'>Update</button>
         </form>
-    </div>
+    </>
   )
 }
 
-export default CategoryUpdate
+export default CategoryUpdateForm
