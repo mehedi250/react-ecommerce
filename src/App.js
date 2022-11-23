@@ -12,8 +12,8 @@ import Master from './layouts/frontend/Master';
 import AdminRoute from './protectedRoute/AdminRoute';
 import Page404 from './layouts/error/Page404';
 import Category from './components/admin/catagory/Category';
-import CategoryAdd from './components/admin/catagory/CategoryAdd';
-import CategoryUpdate from './components/admin/catagory/CategoryUpdate';
+import Product from './components/admin/product/Product';
+
 
 axios.defaults.baseURL = 'http://127.0.0.1:8000';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -45,8 +45,9 @@ function App(props) {
             <Route path='dashboard' element={<Dashboard />} />
             <Route path='profile' element={<Profile />} />
             <Route path='category' element={<Category />} />
-            <Route path='category-add' element={<CategoryAdd />} />
-            <Route path='category-update/:id' element={<CategoryUpdate />} />
+            {/* <Route path='category-add' element={<CategoryAdd />} />
+            <Route path='category-update/:id' element={<CategoryUpdate />} /> */}
+            <Route path='product' element={<Product />} />
 
           </Route>
           <Route path='*' element={<Page404 />} />

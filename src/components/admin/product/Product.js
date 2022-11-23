@@ -1,14 +1,23 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import { categoryDeleteApi, categoryListApi } from '../../../service/serviceApi';
+import Modal from '../../elements/Modal';
+import CategoryAddForm from '../catagory/CategoryAddForm';
+import CategoryUpdateForm from '../catagory/CategoryUpdateForm';
 
 
 function Product() {
-
   const [isLoading, setIsLoading] = useState(true);
   const [productList, setProductList] = useState([]);
+  const [show, setShow] = useState(false);
+  const [productId, setProductId] = useState(0);
+
+  useEffect(() => {
+    getProductList();
+  }, []);
 
   const getProductList = () =>{
     categoryListApi().then(res => {
@@ -21,12 +30,11 @@ function Product() {
       else{
         setProductList([]);
       }
-      
     });
   }
 
   const removeProduct = (removeId)=> {
-    const newProduct = productList.filter((product)=> product.id !== removeId);
+    const newProduct= productList.filter((product)=> product.id !== removeId);
     setProductList(newProduct);
   };
 
@@ -52,16 +60,21 @@ function Product() {
             swal('Error', res.data.message, 'error');
           }
         });
-      } else {
-       
-      }
+      } 
     });
   }
 
-  useEffect(() => {
-    getProductList();
-  }, []);
+  const onClose = (status = 'close') =>{
+    if(status === 'success'){
+      getProductList();
+    }
+    setShow(false);
+  }
 
+  const handleModal = (isShow=false, newProductId = 0) =>{
+    setProductId(newProductId);
+    setShow(isShow);
+  }
   const renderTableData = () =>{
     let view=[];
     productList.map((item) =>{
@@ -69,8 +82,15 @@ function Product() {
         <tr key={item.id}>
           <td>{item.name}</td>
           <td>{item.slug}</td>
+          <td>
+            {(item.status === 1)?
+            <span className="m-badge m-badge-success">Active</span>
+            :
+            <span className="m-badge m-badge-danger">Inactive</span>
+            }
+            </td>
           <td className='text-center'>
-            <Link to={`/admin/category-update/${item.id}`} className='btn btn-info btn-sm mx-2'>Edit</Link>
+            <button className='btn btn-info btn-sm mx-2' onClick={()=>handleModal(true, item.id)}>Edit</button>
             <button className='btn btn-danger btn-sm mx-2' onClick={(e)=>handleDelete(e, item.id)}>Delete</button>
           </td>
         </tr>
@@ -88,7 +108,6 @@ function Product() {
       return view;
     }
   }
-  
 
   return (
     <div className="container-fluid px-4">
@@ -97,7 +116,7 @@ function Product() {
               <h2>Product List</h2>
           </div>
           <div className='ms-auto'>
-              <Link to='/admin/category-add' className='btn btn-primary'>Add New</Link>
+              <button onClick={()=>handleModal(true, 0)} className='btn btn-primary'><FontAwesomeIcon icon="fa fa-plus" />  New</button>
           </div>
       </div>
       <hr />
@@ -107,6 +126,7 @@ function Product() {
             <tr>
               <th scope="col">Name</th>
               <th scope="col">Slug</th>
+              <th scope="col">status</th>
               <th scope="col" className='text-center'>Action</th>
             </tr>
           </thead>
@@ -121,10 +141,16 @@ function Product() {
             </tr>
             }
             {!isLoading && renderTableData()}
-
           </tbody>
         </table>
       </div>
+
+      <Modal title={ productId !== 0 ?'Update Product': 'Add Product'} onClose={onClose} show={show}>
+      { productId !== 0 ? <CategoryUpdateForm onClose={onClose} productId = {productId} />
+        :
+        <CategoryAddForm onClose={onClose} />
+      }
+      </Modal>
     </div>
   )
 }

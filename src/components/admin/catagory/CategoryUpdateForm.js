@@ -16,6 +16,7 @@ function CategoryUpdateForm(props) {
     const [categoryInput, setCategoryInput] = useState(initialData);
     const [error_list, setErrorList] = useState([])
     const [status, setStatus] = useState(true);
+    const [loader, setLoader] = useState(true);
 
     useEffect(()=> {
         getCurrentData(props.categoryId);
@@ -30,7 +31,10 @@ function CategoryUpdateForm(props) {
             if(res.data.success){
                 if(res.data.status === 'success'){
                     setCategoryInput(res.data.data);
-                    setStatus((res.data.data.status==1)?true:false)
+                    setStatus((res.data.data.status===1)?true:false)
+                    setLoader(false);
+                }else{
+                    swal('Error', res.data.message, 'error');
                 }
             }
             else{
@@ -77,13 +81,16 @@ function CategoryUpdateForm(props) {
 
   return (
     <>
+        {loader && 
         <div className="text-center">
             <div className="text-center">
-                <div class="spinner-grow mx-auto" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                <div className="spinner-grow mx-auto" role="status">
+                    <span className="visually-hidden">Loading...</span>
                 </div>    
             </div>
         </div>
+        }
+        {!loader && 
         <form onSubmit={handleSubmit} id="category-form">
             <ul className="nav nav-tabs" id="myTab" role="tablist">
                 <li className="nav-item" role="presentation">
@@ -139,8 +146,9 @@ function CategoryUpdateForm(props) {
                     </div>
                 </div>
             </div>
-            <button type='submit' className='btn btn-primary px-4 my-4 float-end'>Update</button>
+            <button type='submit' className='btn btn-primary px-4 mb-4 float-end'>Update</button>
         </form>
+        }
     </>
   )
 }
