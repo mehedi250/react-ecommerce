@@ -13,7 +13,7 @@ function Sidebar() {
                         <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
                         Category
                     </Link>
-                    <Link className="nav-link" to='/admin/category'>
+                    <Link className="nav-link" to='/admin/product'>
                         <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
                         Products
                     </Link>

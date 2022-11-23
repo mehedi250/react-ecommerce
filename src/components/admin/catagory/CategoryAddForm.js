@@ -115,7 +115,7 @@ function CategoryAddForm(onClose) {
                 </div>
             </div>
 
-            <button type='submit' className='btn btn-primary px-4 my-4 float-end'>Submit</button>
+            <button type='submit' className='btn btn-primary px-4 mb-4 float-end'>Submit</button>
         </form>
     </div>
   )

@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import { categoryDeleteApi, categoryListApi } from '../../../service/serviceApi';
 import Modal from '../../elements/Modal';
 import CategoryAddForm from './CategoryAddForm';
@@ -15,6 +16,10 @@ function Category() {
   const [show, setShow] = useState(false);
   const [categoryId, setCategoryId] = useState(0);
 
+
+  useEffect(() => {
+    getCategoryList();
+  }, []);
 
   const getCategoryList = () =>{
     categoryListApi().then(res => {
@@ -64,12 +69,9 @@ function Category() {
     });
   }
 
-  useEffect(() => {
-    getCategoryList();
-  }, []);
-
+  //modal props function
   const onClose = (status = 'close') =>{
-    if(status == 'success'){
+    if(status === 'success'){
       getCategoryList();
     }
     setShow(false);
@@ -79,6 +81,7 @@ function Category() {
     setCategoryId(newCategoryId);
     setShow(isShow);
   }
+
   const renderTableData = () =>{
     let view=[];
     categoryList.map((item) =>{
@@ -87,7 +90,7 @@ function Category() {
           <td>{item.name}</td>
           <td>{item.slug}</td>
           <td>
-            {(item.status == 1)?
+            {(item.status === 1)?
             <span className="m-badge m-badge-success">Active</span>
             :
             <span className="m-badge m-badge-danger">Inactive</span>
@@ -104,7 +107,7 @@ function Category() {
     if(view.length === 0){
       return (
         <tr key="1">
-          <td colSpan={3} className="text-center py-2">
+          <td colSpan={4} className="text-center py-2">
             No data found!
           </td>
         </tr>);
@@ -112,7 +115,7 @@ function Category() {
       return view;
     }
   }
-  console.log(categoryId)
+
 
   return (
     <div className="container-fluid px-4">
@@ -121,10 +124,11 @@ function Category() {
               <h2>Category List</h2>
           </div>
           <div className='ms-auto'>
-              <button to='/admin/category-add' onClick={()=>handleModal(true, 0)} className='btn btn-primary'>Add New</button>
+              <button onClick={()=>handleModal(true, 0)} className='btn btn-primary'><FontAwesomeIcon icon="fa fa-plus" /> New</button>
           </div>
       </div>
       <hr />
+
       <div>
         <table className="table table-hover">
           <thead>
@@ -138,7 +142,7 @@ function Category() {
           <tbody>
             {isLoading && 
             <tr>
-              <td colSpan={3} className="text-center">
+              <td colSpan={4} className="text-center">
                 <div className="spinner-border" role="status">
                   <span className="visually-hidden">Loading...</span>
                 </div>     
@@ -150,13 +154,13 @@ function Category() {
           </tbody>
         </table>
       </div>
-      <Modal title={ categoryId != 0 ?'Update Category': 'Add Catehory'} onClose={onClose} show={show}>
-      { categoryId != 0 ?
-        <CategoryUpdateForm onClose={onClose} categoryId = {categoryId} />
+
+
+      <Modal title={ categoryId !== 0 ?'Update Category': 'Add Catehory'} onClose={onClose} show={show}>
+      { categoryId !== 0 ? <CategoryUpdateForm onClose={onClose} categoryId = {categoryId} />
         :
         <CategoryAddForm onClose={onClose} />
       }
-        
       </Modal>
     </div>
   )
