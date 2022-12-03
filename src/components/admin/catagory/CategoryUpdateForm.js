@@ -118,13 +118,9 @@ function CategoryUpdateForm(props) {
                         <span className='text-danger'>{error_list.description}</span>
                     </div>
                     <div className="form-group mb-3">
-                        <div className="d-flex">
-                            <div>
-                                <label>Status</label>
-                            </div>
-                            <div className='ps-4'>
-                                <Switch isOn={status} handleToggle={handleStatus} onColor='#32c832'/> 
-                            </div>  
+                        <div className="">
+                            <label>Status</label>
+                            <Switch isOn={status} handleToggle={handleStatus} onColor='#32c832'/> 
                         </div>
                     </div>
                 </div>

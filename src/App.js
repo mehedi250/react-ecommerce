@@ -21,7 +21,7 @@ axios.defaults.headers.post['Accept'] = 'application/json';
 axios.defaults.withCredentials = true;
 
 axios.interceptors.request.use(function(config){
-  const token = localStorage.getItem('auth_token');
+  const token = localStorage.getItem('__rea_token');
   config.headers.Authorization = token ? `Bearer ${token}` : '';
   return config;
 }) 
@@ -39,14 +39,12 @@ function App(props) {
             <Route path='/register' element={<Register />} />
           </Route>
 
-          {/* <Route path='/admin/' element={(localStorage.getItem('auth_token'))?<AdminRoute/>:<Navigate replace to="/login" />} > */}
+          {/* <Route path='/admin/' element={(localStorage.getItem('__rea_token'))?<AdminRoute/>:<Navigate replace to="/login" />} > */}
           <Route path='/admin/' element={<AdminRoute/>} >
             <Route path='' element={<Navigate replace to="/admin/dashboard" />}  />
             <Route path='dashboard' element={<Dashboard />} />
             <Route path='profile' element={<Profile />} />
             <Route path='category' element={<Category />} />
-            {/* <Route path='category-add' element={<CategoryAdd />} />
-            <Route path='category-update/:id' element={<CategoryUpdate />} /> */}
             <Route path='product' element={<Product />} />
 
           </Route>

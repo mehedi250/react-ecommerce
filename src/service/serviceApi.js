@@ -21,3 +21,11 @@ export const categoryDeleteApi = async (id, payload = []) => {
 export const categoryFindApi = async (id, payload = []) => {
     return sendRequest(POST, `/api/admin/category/${id}`, payload);
 }
+
+export const categoryDropdoenApi = async (payload = []) => {
+    return sendRequest(POST, '/api/admin/category-dropdown-list', payload);
+}
+
+export const dashboardDataApi = async (payload = []) => {
+    return sendRequest(POST, '/api/admin/dashboard-data', payload);
+}

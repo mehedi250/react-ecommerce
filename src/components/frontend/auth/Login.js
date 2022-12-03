@@ -26,8 +26,8 @@ function Login() {
     axios.get('/sanctum/csrf-cookie').then(response => {
       axios.post('/api/login', data).then(res => {
         if(res.data.success){
-          localStorage.setItem('auth_token', res.data.token);
-          localStorage.setItem('auth_name', res.data.username);
+          localStorage.setItem('__rea_token', res.data.token);
+          localStorage.setItem('__rea_auth_name', res.data.username);
           swal('Success', res.data.message, 'success');
           setTimeout(() => {
             if(res.data.role === 'admin'){

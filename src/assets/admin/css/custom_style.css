@@ -18,7 +18,7 @@
     border-radius: 20px;
     position: relative;
     transition: background-color .2s;
-    margin-top: -24px;
+    /* margin-top: -24px; */
 }
   
 .react-switch-label .react-switch-button {
