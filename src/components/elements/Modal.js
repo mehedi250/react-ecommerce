@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-// import { CSSTransition } from "react-transition-group";
 import  '../../assets/admin/css/modal.css';
 
 const Modal = ({title, show, onClose, children}) => {
@@ -33,18 +32,23 @@ const Modal = ({title, show, onClose, children}) => {
     <>
         <div className="modal fade" id="exampleModal" aria-labelledby="exampleModalLabel" aria-modal="true"
             role="dialog">
-            <div className="modal-dialog" role="document">
+            <div className="modal-dialog modal-lg" role="document">
                 <div className="modal-content">
-                    <div className="modal-header">
+                    <div className="modal-header d-flex">
                         <h5 className="modal-title" id="exampleModalLabel">{title}</h5>
 
-                        <button type="button" className="close" aria-label="Close" onClick={()=>onClose()}>
+                        {/* <button type="button" className="close" aria-label="Close" onClick={()=>onClose()}>
                             <span aria-hidden="true">×</span>
-                        </button>
+                        </button> */}
+                        <span type="button" className="close p-0" data-dismiss="modal" aria-label="Close" onClick={()=>onClose()} >
+                            <span aria-hidden="true">&times;</span>
+                        </span>
+                        {/* <div>
+                            <FontAwesomeIcon icon="fa-solid fa-xmark" size="2x" className="close pointer" onClick={()=>onClose()} />
+                        </div> */}
                     </div>
                     <div className="modal-body">
-                        
-                        {children}
+                        {show && children}
                     </div>
                 </div>
             </div>

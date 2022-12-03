@@ -9,8 +9,8 @@ function Navbar() {
         e.preventDefault();
         axios.post('/api/logout').then(res => {
             if(res.data.success){
-                localStorage.removeItem('auth_token');
-                localStorage.removeItem('auth_name');
+                localStorage.removeItem('__rea_token');
+                localStorage.removeItem('__rea_auth_name');
                 swal('Success', res.data.message, 'success');
                 navigate('/');
             }
@@ -34,7 +34,7 @@ function Navbar() {
                
                 </ul>
                 <ul className="navbar-nav ms-auto mb-2 mb-lg-0 ">
-                {   (!localStorage.getItem('auth_token')) &&
+                {   (!localStorage.getItem('__rea_token')) &&
                     <>
                     <li className="nav-item">
                         <Link className="nav-link" to="/login">Login</Link>
@@ -48,9 +48,9 @@ function Navbar() {
                     {/* <li className="nav-item">
                         <button className="nav-link px-3 btn btn-logout" onClick={handleLogout}>Logout</button>
                     </li> */}
-                    <li className={`nav-item dropdown ${(localStorage.getItem('auth_token'))?'':'d-none'}`}>
+                    <li className={`nav-item dropdown ${(localStorage.getItem('__rea_token'))?'':'d-none'}`}>
                         <Link className="nav-link dropdown-toggle" id="navbarDropdown" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {(localStorage.getItem('auth_name')) ? localStorage.getItem('auth_name'): 'UNDEFIND'}
+                            {(localStorage.getItem('__rea_auth_name')) ? localStorage.getItem('__rea_auth_name'): 'UNDEFIND'}
                         </Link>
                         <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li><Link className="dropdown-item" to="/admin/profile">Profile</Link></li>

@@ -86,14 +86,8 @@ function CategoryAddForm(onClose) {
                         <span className='text-danger'>{categoryInput.error_list.description}</span>
                     </div>
                     <div className="form-group mb-3">
-                        <div className="d-flex">
-                            <div>
-                                <label>Status</label>
-                            </div>
-                            <div className='ps-4'>
-                                <Switch isOn={status} handleToggle={handleStatus} onColor='#32c832'/> 
-                            </div>  
-                        </div>
+                            <label>Status</label>
+                            <Switch isOn={status} handleToggle={handleStatus} onColor='#32c832'/>   
                     </div>
                 </div>
                 <div className="tab-pane py-4 fade" id="seo-tags" role="tabpanel" aria-labelledby="seo-tags-tab">

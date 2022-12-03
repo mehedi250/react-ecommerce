@@ -13,8 +13,8 @@ function Navbar() {
         e.preventDefault();
         axios.post('/api/logout').then(res => {
             if(res.data.success){
-                localStorage.removeItem('auth_token');
-                localStorage.removeItem('auth_name');
+                localStorage.removeItem('__rea_token');
+                localStorage.removeItem('__rea_auth_name');
                 swal('Success', res.data.message, 'success');
                 navigate('/login');
             }

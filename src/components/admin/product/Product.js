@@ -5,14 +5,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { categoryDeleteApi, categoryListApi } from '../../../service/serviceApi';
 import Modal from '../../elements/Modal';
-import CategoryAddForm from '../catagory/CategoryAddForm';
 import CategoryUpdateForm from '../catagory/CategoryUpdateForm';
+import ProductAdd from './ProductAdd';
 
 
 function Product() {
   const [isLoading, setIsLoading] = useState(true);
   const [productList, setProductList] = useState([]);
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false);  //show of hide modal
   const [productId, setProductId] = useState(0);
 
   useEffect(() => {
@@ -148,7 +148,7 @@ function Product() {
       <Modal title={ productId !== 0 ?'Update Product': 'Add Product'} onClose={onClose} show={show}>
       { productId !== 0 ? <CategoryUpdateForm onClose={onClose} productId = {productId} />
         :
-        <CategoryAddForm onClose={onClose} />
+        <ProductAdd onClose={onClose} show={show} />
       }
       </Modal>
     </div>
