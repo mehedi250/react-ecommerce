@@ -82,7 +82,7 @@ function CategoryUpdateForm(props) {
   return (
     <>
         {loader && 
-        <div className="text-center">
+        <div className="text-center py-5">
             <div className="text-center">
                 <div className="spinner-grow mx-auto" role="status">
                     <span className="visually-hidden">Loading...</span>
