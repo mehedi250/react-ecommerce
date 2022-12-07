@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import  '../../assets/admin/css/modal.css';
 
-const Modal = ({title, show, onClose, children}) => {
+const Modal = ({title, show, onClose, customClass="md", children}) => {
     const openModal =()=> {
         document.getElementById("backdrop").style.display = "block"
         document.getElementById("exampleModal").style.display = "block"
@@ -32,7 +32,7 @@ const Modal = ({title, show, onClose, children}) => {
     <>
         <div className="modal fade" id="exampleModal" aria-labelledby="exampleModalLabel" aria-modal="true"
             role="dialog">
-            <div className="modal-dialog modal-lg" role="document">
+            <div className={`modal-dialog modal-${customClass}`} role="document">
                 <div className="modal-content">
                     <div className="modal-header d-flex">
                         <h5 className="modal-title" id="exampleModalLabel">{title}</h5>

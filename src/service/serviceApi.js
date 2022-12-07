@@ -29,3 +29,15 @@ export const categoryDropdoenApi = async (payload = []) => {
 export const dashboardDataApi = async (payload = []) => {
     return sendRequest(POST, '/api/admin/dashboard-data', payload);
 }
+
+export const productSaveApi = async (payload = []) => {
+    return sendRequest(POST, '/api/admin/product-save', payload);
+}
+
+export const productListApi = async (payload = []) => {
+    return sendRequest(POST, '/api/admin/product-list', payload);
+}
+
+export const productFindApi = async (id, payload = []) => {
+    return sendRequest(POST, `/api/admin/product/${id}`, payload);
+}

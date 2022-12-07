@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import swal from 'sweetalert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { categoryDeleteApi, categoryListApi } from '../../../service/serviceApi';
+import { categoryDeleteApi, categoryListApi, productListApi } from '../../../service/serviceApi';
 import Modal from '../../elements/Modal';
 import CategoryUpdateForm from '../catagory/CategoryUpdateForm';
 import ProductAdd from './ProductAdd';
@@ -20,7 +20,7 @@ function Product() {
   }, []);
 
   const getProductList = () =>{
-    categoryListApi().then(res => {
+    productListApi().then(res => {
       if(res.data.success){
         if(res.data.status === 'success'){
           setIsLoading(false)
@@ -75,6 +75,7 @@ function Product() {
     setProductId(newProductId);
     setShow(isShow);
   }
+  
   const renderTableData = () =>{
     let view=[];
     productList.map((item) =>{

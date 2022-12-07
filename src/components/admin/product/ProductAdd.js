@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import swal from 'sweetalert';
-import { categoryDropdoenApi, categoryInsertApi } from '../../../service/serviceApi';
+import { categoryDropdoenApi, productSaveApi } from '../../../service/serviceApi';
 import Switch from '../../elements/Switch';
 import Select from 'react-select'
 
@@ -39,7 +39,6 @@ function ProductAdd(onClose) {
         categoryDropdoenApi().then(res => {
             if(res.data.success){
                 if(res.data.status === 'success'){
-                    setLoader(false)
                     let allOptions = [];
                     if (res.data.data.length > 0) {
                         allOptions = res.data.data.map(item => {
@@ -49,8 +48,8 @@ function ProductAdd(onClose) {
                             }
                         });
                         setCategoryList([DEFAULT_CATEGORY, ...allOptions]);
-                    }
-                }
+                    } 
+                }    
             }
             setLoader(false)
         });
@@ -95,11 +94,11 @@ function ProductAdd(onClose) {
         formData.append('selling_price', productInput.selling_price)
         formData.append('original_price', productInput.original_price)
         formData.append('quantity', productInput.quantity)
-        formData.append('featured', featured)
-        formData.append('status', status)
-        formData.append('popular', popular)
+        formData.append('featured', featured===true?1:0)
+        formData.append('status', status===true?1:0)
+        formData.append('popular', popular===true?1:0)
 
-        categoryInsertApi(formData).then(res => {
+        productSaveApi(formData).then(res => {
             if(res.data.success){
                 if(res.data.status === 'success'){
                     swal('Success', res.data.message, 'success');
@@ -121,16 +120,15 @@ function ProductAdd(onClose) {
   return (
     <div>
         
-        {loader && 
-        <div className="text-center">
+        {loader === true ?
+        <div className="text-center py-5">
             <div className="text-center">
                 <div className="spinner-grow mx-auto" role="status">
                     <span className="visually-hidden">Loading...</span>
                 </div>    
             </div>
         </div>
-        }
-        {!loader && 
+        :
         <form onSubmit={handleSubmit} id="category-form"  encType="multipart/form-data">
             {isLoading && 
             <div className="text-center">
@@ -220,14 +218,14 @@ function ProductAdd(onClose) {
                                 <span className='text-danger'>{productInput.error_list.quantity}</span>
                             </div>
                         </div>
-                        <div className="col-md-6 col-lg-4">
+                        <div className="col-md-6">
                             <div className="form-group mb-3">
                                 <label>Brand</label>
                                 <input type="text" name="brand" value={productInput.brand} onChange={handleInput} className="form-control" />
                                 <span className='text-danger'>{productInput.error_list.brand}</span>
                             </div>
                         </div>
-                        <div className="col-md-6 col-lg-4">
+                        <div className="col-md-6">
                             <div className="form-group mb-3">
                                 <label>Image</label>
                                 <input type="file" name="image" onChange={handleImage} accept="image/png, image/jpg, image/jpeg" className="form-control" />
@@ -239,19 +237,19 @@ function ProductAdd(onClose) {
                         <div className="col-md-6 col-lg-4">
                             <div className="form-group mb-3">
                                 <label>Featured</label>
-                                <Switch isOn={featured} handleToggle={handleFeatured} onColor='#32c832'/> 
+                                <Switch isOn={featured} handleToggle={handleFeatured} index="1" /> 
                             </div>
                         </div>
                         <div className="col-md-6 col-lg-4">
                             <div className="form-group mb-3">
                                 <label>Popular</label>
-                                <Switch isOn={popular} handleToggle={handlePopular} onColor='#32c832'/> 
+                                <Switch isOn={popular} handleToggle={handlePopular} index="2" /> 
                             </div>
                         </div>
                         <div className="col-md-6 col-lg-4">
                             <div className="form-group mb-3">
                                 <label>Status</label>
-                                <Switch isOn={status} handleToggle={handleStatus} onColor='#32c832'/> 
+                                <Switch isOn={status} handleToggle={handleStatus} index="3" /> 
                             </div>
                         </div>
 

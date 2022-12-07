@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useEffect } from 'react';
 import swal from 'sweetalert';
 import { categoryInsertApi } from '../../../service/serviceApi';
 import Switch from '../../elements/Switch';
@@ -15,6 +16,17 @@ function CategoryAddForm(onClose) {
     }
     const [categoryInput, setCategoryInput] = useState(initialData)
     const [status, setStatus] = useState(true);
+    const [loader, setLoader] = useState(true);
+
+    useEffect(() => {
+        setTimeout(
+            function() {
+                setLoader(false)
+            }
+            .bind(this),
+            1200
+        );
+    }, []);
 
     const handleInput = (e) =>{
         e.persist();
@@ -58,6 +70,15 @@ function CategoryAddForm(onClose) {
 
   return (
     <div>
+        {loader === true ?
+        <div className="text-center py-5">
+            <div className="text-center">
+                <div className="spinner-grow mx-auto" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>    
+            </div>
+        </div>
+        :
         <form onSubmit={handleSubmit} id="category-form">
             <ul className="nav nav-tabs" id="myTab" role="tablist">
                 <li className="nav-item" role="presentation">
@@ -87,7 +108,7 @@ function CategoryAddForm(onClose) {
                     </div>
                     <div className="form-group mb-3">
                             <label>Status</label>
-                            <Switch isOn={status} handleToggle={handleStatus} onColor='#32c832'/>   
+                            <Switch isOn={status} handleToggle={handleStatus}  />   
                     </div>
                 </div>
                 <div className="tab-pane py-4 fade" id="seo-tags" role="tabpanel" aria-labelledby="seo-tags-tab">
@@ -111,6 +132,7 @@ function CategoryAddForm(onClose) {
 
             <button type='submit' className='btn btn-primary px-4 mb-4 float-end'>Submit</button>
         </form>
+        }
     </div>
   )
 }
