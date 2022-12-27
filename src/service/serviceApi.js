@@ -38,6 +38,10 @@ export const productListApi = async (payload = []) => {
     return sendRequest(POST, '/api/admin/product-list', payload);
 }
 
-export const productFindApi = async (id, payload = []) => {
-    return sendRequest(POST, `/api/admin/product/${id}`, payload);
+export const productDetailsApi = async (payload = []) => {
+    return sendRequest(POST, `/api/admin/product-details`, payload);
+}
+
+export const productUpdateApi = async (id, payload = []) => {
+    return sendRequest(POST, `/api/admin/product-update/${id}`, payload);
 }

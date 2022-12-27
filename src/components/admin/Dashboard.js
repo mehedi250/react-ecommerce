@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { dashboardDataApi } from '../../service/serviceApi';
+import useDelayCallback from '../helpers/useDelayCallback';
 
 function Dashboard() {
   const initialData = {
     countCategory: null,
     countProduct: null,
     countUser: null
-
   }
   const [isLoading, setIsLoading] = useState(true);
   const [cardData, setCardData] = useState(initialData);
 
-  useEffect(() => {
+  useDelayCallback(() => {
     getDashboardData();
   }, []);
 

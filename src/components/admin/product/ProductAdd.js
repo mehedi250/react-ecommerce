@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import swal from 'sweetalert';
-import { categoryDropdoenApi, productSaveApi } from '../../../service/serviceApi';
+import { productDetailsApi, productSaveApi, productUpdateApi } from '../../../service/serviceApi';
 import Switch from '../../elements/Switch';
 import Select from 'react-select'
+import useDelayCallback from '../../helpers/useDelayCallback';
 
-function ProductAdd(onClose) {
+function ProductAdd(props) {
     const initialData = {
         category: null,
         meta_title: '',
@@ -17,41 +18,63 @@ function ProductAdd(onClose) {
         original_price: '',
         description: '',
         quantity: '',
+        status: true,
+        featured: false,
+        popular: false,
+        oldImage: null,
         error_list: []
     }
 
     const DEFAULT_CATEGORY = {label: 'Select Category', value: ''};
     const [productInput, setProductInput] = useState(initialData)
-    const [status, setStatus] = useState(true);
-    const [featured, setFeatured] = useState(false);
-    const [popular, setPopular] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [loader, setLoader] = useState(true);
-    const [categoryList, setCategoryList] = useState([DEFAULT_CATEGORY]);
     const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
     const [picture, setPicture] = useState([]);
 
-    useEffect(() => {
-        getCategoryDropdown();
+    useDelayCallback(() => {
+        if(props.productId !== 0){
+            loadData();
+        }else{
+            setLoader(false)
+        }
     }, []);
 
-    const getCategoryDropdown = () =>{
-        categoryDropdoenApi().then(res => {
+    const loadData = () =>{
+        productDetailsApi({id: props.productId}).then(res => {
             if(res.data.success){
                 if(res.data.status === 'success'){
-                    let allOptions = [];
-                    if (res.data.data.length > 0) {
-                        allOptions = res.data.data.map(item => {
-                            return {
-                                value: item.id,
-                                label: item.name
-                            }
-                        });
-                        setCategoryList([DEFAULT_CATEGORY, ...allOptions]);
-                    } 
+                    const tempData = {
+                        meta_title: res.data.data.meta_title,
+                        meta_keywords: res.data.data.meta_keyword,
+                        meta_description: res.data.data.meta_description,
+                        slug: res.data.data.slug,
+                        name: res.data.data.name,
+                        brand: res.data.data.brand,
+                        selling_price: res.data.data.selling_price,
+                        original_price: res.data.data.original_price,
+                        description: res.data.data.description,
+                        quantity: res.data.data.quantity,
+                        status: res.data.data.status===1,
+                        featured: res.data.data.featured===1,
+                        popular: res.data.data.popular===1,
+                        oldImage: res.data.data.image
+                    }
+                    setProductInput({...productInput, ...tempData})
+                    let i=0;
+                    while(i < props.categoryList.length){
+                        if(props.categoryList[i].value === res.data.data.category_id){
+                            setSelectedCategory(props.categoryList[i])
+                        }
+                        i++;
+                    }
+
                 }    
             }
             setLoader(false)
+        })
+        .catch(error => {
+            console.log('something is wrong' + error)
         });
     }
 
@@ -64,16 +87,59 @@ function ProductAdd(onClose) {
         setProductInput({...productInput, [e.target.name]: e.target.value})
     }
 
-    const handleStatus = () =>{
-        setStatus(!status);
+    const handleName = (e) =>{
+        e.persist();
+        let tempSlug = e.target.value;
+        tempSlug = tempSlug.toString()
+        .normalize('NFD')                   // split an accented letter in the base letter and the acent
+        .replace(/[\u0300-\u036f]/g, '')   // remove all previously split accents
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9 ]/g, '')   // remove all chars not letters, numbers and spaces (to be replaced)
+        .replace(/\s+/g, '-');
+
+        const tempData = {name: e.target.value, slug: tempSlug};
+        setProductInput({...productInput, ...tempData})
     }
 
-    const handleFeatured = () =>{
-        setFeatured(!featured);
+    const handleUpdate = (formData) =>{
+        productUpdateApi(props.productId, formData).then(res => {
+            if(res.data.success){
+                if(res.data.status === 'success'){
+                    swal('Success', res.data.message, 'success');
+                    props.onClose('success')
+                }
+            }
+            else{
+                if(res.data.status === 'validation-error'){
+                    setProductInput({...productInput, error_list: res.data.errors})
+                }
+                else{
+                    swal('Error', res.data.message, 'error');
+                }
+            }
+            setIsLoading(false)
+        });
     }
 
-    const handlePopular = () =>{
-        setPopular(!popular);
+    const handleCreate = (formData) =>{
+        productSaveApi(formData).then(res => {
+            if(res.data.success){
+                if(res.data.status === 'success'){
+                    swal('Success', res.data.message, 'success');
+                    props.onClose('success')
+                }
+            }
+            else{
+                if(res.data.status === 'validation-error'){
+                    setProductInput({...productInput, error_list: res.data.errors})
+                }
+                else{
+                    swal('Error', res.data.message, 'error');
+                }
+            }
+            setIsLoading(false)
+        });
     }
 
     const handleSubmit = (e) =>{
@@ -88,33 +154,21 @@ function ProductAdd(onClose) {
         formData.append('name', productInput.name)
         formData.append('description', productInput.description);
         formData.append('meta_title', productInput.meta_title)
-        formData.append('meta_keywords', productInput.meta_keywords)
+        formData.append('meta_keyword', productInput.meta_keywords)
         formData.append('meta_description', productInput.meta_description)
         formData.append('brand', productInput.brand)
         formData.append('selling_price', productInput.selling_price)
         formData.append('original_price', productInput.original_price)
         formData.append('quantity', productInput.quantity)
-        formData.append('featured', featured===true?1:0)
-        formData.append('status', status===true?1:0)
-        formData.append('popular', popular===true?1:0)
+        formData.append('featured', productInput.featured===true?1:0)
+        formData.append('status', productInput.status===true?1:0)
+        formData.append('popular', productInput.popular===true?1:0)
 
-        productSaveApi(formData).then(res => {
-            if(res.data.success){
-                if(res.data.status === 'success'){
-                    swal('Success', res.data.message, 'success');
-                    onClose('success')
-                }
-            }
-            else{
-                if(res.data.status === 'validation-error'){
-                    setProductInput({...productInput, error_list: res.data.errors})
-                }
-                else{
-                    swal('Error', res.data.message, 'error');
-                }
-            }
-            setIsLoading(false)
-        });
+        if(props.productId !== 0){
+            handleUpdate(formData);
+        }else{
+            handleCreate(formData);
+        }
     }
 
   return (
@@ -149,25 +203,25 @@ function ProductAdd(onClose) {
                 <li className="nav-item" role="presentation">
                     <button className="nav-link" id="other-details-tab" data-bs-toggle="tab" data-bs-target="#other-details" type="button" role="tab" aria-controls="other-details" aria-selected="false">Other Details</button>
                 </li>
-        
             </ul>
             <div className="tab-content" id="myTabContent">
                 <div className="tab-pane  py-4 fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div className="form-group mb-3">
                         <label>Category</label>
-                        <Select options={categoryList} onChange={setSelectedCategory} value={selectedCategory}/>
+                        <Select options={props.categoryList} onChange={setSelectedCategory} value={selectedCategory}/>
                         <span className='text-danger'>{productInput.error_list.category}</span>
+                    </div>
+                    <div className="form-group mb-3">
+                        <label>Name</label>
+                        <input type="text" name="name" onChange={handleName} value={productInput.name} className="form-control" />
+                        <span className='text-danger'>{productInput.error_list.name}</span>
                     </div>
                     <div className="form-group mb-3">
                         <label>Slug</label>
                         <input type="text" name="slug" onChange={handleInput} value={productInput.slug} className="form-control" />
                         <span className='text-danger'>{productInput.error_list.slug}</span>
                     </div>
-                    <div className="form-group mb-3">
-                        <label>Name</label>
-                        <input type="text" name="name" onChange={handleInput} value={productInput.name} className="form-control" />
-                        <span className='text-danger'>{productInput.error_list.name}</span>
-                    </div>
+                    
 
                     <div className="form-group mb-3">
                         <label>Description</label> 
@@ -226,30 +280,36 @@ function ProductAdd(onClose) {
                             </div>
                         </div>
                         <div className="col-md-6">
+                            
                             <div className="form-group mb-3">
                                 <label>Image</label>
                                 <input type="file" name="image" onChange={handleImage} accept="image/png, image/jpg, image/jpeg" className="form-control" />
                                 <span className='text-danger'>{productInput.error_list.image}</span>
                             </div>
+                            {(productInput.oldImage != null && picture.length === 0) &&
+                                <div>
+                                    <img style={{maxWidth: "40px"}} src={`${process.env.REACT_APP_BACKEND_ROOT_URL}${productInput.oldImage}`} alt="" />
+                                </div>
+                            }
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-md-6 col-lg-4">
                             <div className="form-group mb-3">
                                 <label>Featured</label>
-                                <Switch isOn={featured} handleToggle={handleFeatured} index="1" /> 
+                                <Switch isOn={productInput.featured} handleToggle={()=>setProductInput({...productInput, featured: !productInput.featured})} index="1" /> 
                             </div>
                         </div>
                         <div className="col-md-6 col-lg-4">
                             <div className="form-group mb-3">
                                 <label>Popular</label>
-                                <Switch isOn={popular} handleToggle={handlePopular} index="2" /> 
+                                <Switch isOn={productInput.popular} handleToggle={ ()=>setProductInput({...productInput, popular: !productInput.popular})} index="2" /> 
                             </div>
                         </div>
                         <div className="col-md-6 col-lg-4">
                             <div className="form-group mb-3">
                                 <label>Status</label>
-                                <Switch isOn={status} handleToggle={handleStatus} index="3" /> 
+                                <Switch isOn={productInput.status} handleToggle={ ()=>setProductInput({...productInput, status: !productInput.status})} index="3" /> 
                             </div>
                         </div>
 
@@ -259,7 +319,7 @@ function ProductAdd(onClose) {
                 </div>
             </div>
 
-            <button type='submit' className='btn btn-primary px-4 mb-4 float-end'>Submit</button>
+            <button type='submit' className='btn btn-primary px-4 mb-4 float-end'>{props.productId !== 0?'Update':'Submit'}</button>
         </form>
         }
     </div>

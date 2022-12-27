@@ -20,11 +20,7 @@ function CategoryAddForm(onClose) {
 
     useEffect(() => {
         setTimeout(
-            function() {
-                setLoader(false)
-            }
-            .bind(this),
-            1200
+            setLoader(false)
         );
     }, []);
 
