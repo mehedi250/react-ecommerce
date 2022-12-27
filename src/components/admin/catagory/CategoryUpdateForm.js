@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import swal from 'sweetalert';
 import { categoryFindApi, categoryUpdateApi } from '../../../service/serviceApi';
 import Switch from '../../elements/Switch';
+import useDelayCallback from '../../helpers/useDelayCallback';
 
 function CategoryUpdateForm(props) {
     const initialData = {
@@ -18,7 +19,7 @@ function CategoryUpdateForm(props) {
     const [status, setStatus] = useState(true);
     const [loader, setLoader] = useState(true);
 
-    useEffect(()=> {
+    useDelayCallback(()=> {
         getCurrentData(props.categoryId);
     }, [props.categoryId])
 

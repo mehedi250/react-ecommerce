@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
-import { useEffect } from 'react';
 import swal from 'sweetalert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { categoryDeleteApi, categoryListApi, productListApi } from '../../../service/serviceApi';
+import { categoryDeleteApi, categoryDropdoenApi, productListApi } from '../../../service/serviceApi';
 import Modal from '../../elements/Modal';
-import CategoryUpdateForm from '../catagory/CategoryUpdateForm';
 import ProductAdd from './ProductAdd';
+import useDelayCallback from '../../helpers/useDelayCallback';
 
 
 function Product() {
@@ -14,9 +13,13 @@ function Product() {
   const [productList, setProductList] = useState([]);
   const [show, setShow] = useState(false);  //show of hide modal
   const [productId, setProductId] = useState(0);
+  const DEFAULT_CATEGORY = {label: 'Select Category', value: ''};
+  const [categoryList, setCategoryList] = useState([DEFAULT_CATEGORY]);
+  
 
-  useEffect(() => {
+  useDelayCallback(() => {
     getProductList();
+    getCategoryDropdown();
   }, []);
 
   const getProductList = () =>{
@@ -79,17 +82,19 @@ function Product() {
   const renderTableData = () =>{
     let view=[];
     productList.map((item) =>{
+
       view.push(
         <tr key={item.id}>
           <td>{item.name}</td>
           <td>{item.slug}</td>
+          <td>{item.category.name}</td>
           <td>
             {(item.status === 1)?
             <span className="m-badge m-badge-success">Active</span>
             :
             <span className="m-badge m-badge-danger">Inactive</span>
             }
-            </td>
+          </td>
           <td className='text-center'>
             <button className='btn btn-info btn-sm mx-2' onClick={()=>handleModal(true, item.id)}>Edit</button>
             <button className='btn btn-danger btn-sm mx-2' onClick={(e)=>handleDelete(e, item.id)}>Delete</button>
@@ -101,7 +106,7 @@ function Product() {
     if(view.length === 0){
       return (
         <tr key="1">
-          <td colSpan={3} className="text-center py-2">
+          <td colSpan={4} className="text-center py-2">
             No data found!
           </td>
         </tr>);
@@ -109,6 +114,28 @@ function Product() {
       return view;
     }
   }
+
+  const getCategoryDropdown = () =>{
+      categoryDropdoenApi().then(res => {
+        if(res.data.success){
+            if(res.data.status === 'success'){
+                let allOptions = [];
+                if (res.data.data.length > 0) {
+                    allOptions = res.data.data.map(item => {
+                        return {
+                            value: item.id,
+                            label: item.name
+                        }
+                    });
+                    setCategoryList([DEFAULT_CATEGORY, ...allOptions]);
+                } 
+            }    
+        }
+    }).catch(error => {
+        console.log('something is wrong' + error)
+        
+    });
+}
 
   return (
     <div className="container-fluid px-4">
@@ -127,6 +154,7 @@ function Product() {
             <tr>
               <th scope="col">Name</th>
               <th scope="col">Slug</th>
+              <th scope="col">Category</th>
               <th scope="col">status</th>
               <th scope="col" className='text-center'>Action</th>
             </tr>
@@ -134,7 +162,7 @@ function Product() {
           <tbody>
             {isLoading && 
             <tr>
-              <td colSpan={3} className="text-center">
+              <td colSpan={5} className="text-center">
                 <div className="spinner-border" role="status">
                   <span className="visually-hidden">Loading...</span>
                 </div>     
@@ -147,10 +175,7 @@ function Product() {
       </div>
 
       <Modal title={ productId !== 0 ?'Update Product': 'Add Product'} onClose={onClose} show={show}>
-      { productId !== 0 ? <CategoryUpdateForm onClose={onClose} productId = {productId} />
-        :
-        <ProductAdd onClose={onClose} show={show} />
-      }
+        <ProductAdd onClose={onClose} categoryList={categoryList} productId = {productId} />
       </Modal>
     </div>
   )

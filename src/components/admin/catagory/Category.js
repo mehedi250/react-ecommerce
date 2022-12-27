@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useEffect } from 'react';
 import swal from 'sweetalert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -7,6 +6,7 @@ import { categoryDeleteApi, categoryListApi } from '../../../service/serviceApi'
 import Modal from '../../elements/Modal';
 import CategoryAddForm from './CategoryAddForm';
 import CategoryUpdateForm from './CategoryUpdateForm';
+import useDelayCallback from '../../helpers/useDelayCallback';
 
 
 
@@ -17,7 +17,7 @@ function Category() {
   const [categoryId, setCategoryId] = useState(0);
 
 
-  useEffect(() => {
+  useDelayCallback(() => {
     getCategoryList();
   }, []);
 
