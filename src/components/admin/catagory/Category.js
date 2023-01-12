@@ -55,7 +55,13 @@ function Category() {
         categoryDeleteApi(id).then(res => {
           if(res.data.success){
             if(res.data.status === 'success'){
-              swal('Success', res.data.message, 'success');
+              swal({
+                title: "Success",
+                text: res.data.message,
+                icon: "success",
+                buttons: false,
+                timer: 1500
+            })
               removeCategory(id)
             }
           }

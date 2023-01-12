@@ -46,7 +46,23 @@ function CategoryUpdateForm(props) {
 
     const handleInput = (e) =>{
         e.persist();
-        setCategoryInput({...categoryInput, [e.target.name]: e.target.value})
+        
+
+        if(e.target.name === 'name'){
+            let tempSlug = e.target.value;
+            tempSlug = tempSlug.toString()
+            .normalize('NFD')                   // split an accented letter in the base letter and the acent
+            .replace(/[\u0300-\u036f]/g, '')   // remove all previously split accents
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9 ]/g, '')   // remove all chars not letters, numbers and spaces (to be replaced)
+            .replace(/\s+/g, '-');
+
+            const tempData = {name: e.target.value, slug: tempSlug};
+            setCategoryInput({...categoryInput, ...tempData})
+        }else{
+            setCategoryInput({...categoryInput, [e.target.name]: e.target.value});
+        }
     }
 
     const handleSubmit = (e) =>{
@@ -65,7 +81,13 @@ function CategoryUpdateForm(props) {
         categoryUpdateApi(props.categoryId, data).then(res => {
             if(res.data.success){
                 if(res.data.status === 'success'){
-                    swal('Success', res.data.message, 'success');
+                    swal({
+                        title: "Success",
+                        text: res.data.message,
+                        icon: "success",
+                        buttons: false,
+                        timer: 1500
+                    })
                     props.onClose('success')
                 }
             }
@@ -104,15 +126,16 @@ function CategoryUpdateForm(props) {
             <div className="tab-content" id="myTabContent">
                 <div className="tab-pane py-4 fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div className="form-group mb-3">
-                        <label>Slug</label>
-                        <input type="text" name="slug" onChange={handleInput} value={categoryInput.slug} className="form-control" />
-                        <span className='text-danger'>{error_list.slug}</span>
-                    </div>
-                    <div className="form-group mb-3">
                         <label>Name</label>
                         <input type="text" name="name" onChange={handleInput} value={categoryInput.name} className="form-control" />
                         <span className='text-danger'>{error_list.name}</span>
                     </div>
+                    <div className="form-group mb-3">
+                        <label>Slug</label>
+                        <input type="text" name="slug" onChange={handleInput} value={categoryInput.slug} className="form-control" />
+                        <span className='text-danger'>{error_list.slug}</span>
+                    </div>
+                    
                     <div className="form-group mb-3">
                         <label>Description</label> 
                         <textarea name="description" onChange={handleInput} value={categoryInput.description} className="form-control"></textarea>

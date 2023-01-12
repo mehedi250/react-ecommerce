@@ -106,7 +106,7 @@ function Product() {
     if(view.length === 0){
       return (
         <tr key="1">
-          <td colSpan={4} className="text-center py-2">
+          <td colSpan={5} className="text-center py-2">
             No data found!
           </td>
         </tr>);
