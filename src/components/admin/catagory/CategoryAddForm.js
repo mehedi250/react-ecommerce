@@ -4,7 +4,7 @@ import swal from 'sweetalert';
 import { categoryInsertApi } from '../../../service/serviceApi';
 import Switch from '../../elements/Switch';
 
-function CategoryAddForm(onClose) {
+function CategoryAddForm(props) {
     const initialData = {
         slug: '',
         name: '',
@@ -49,8 +49,14 @@ function CategoryAddForm(onClose) {
         categoryInsertApi(data).then(res => {
             if(res.data.success){
                 if(res.data.status === 'success'){
-                    swal('Success', res.data.message, 'success');
-                    onClose('success')
+                    swal({
+                        title: "Success",
+                        text: res.data.message,
+                        icon: "success",
+                        buttons: false,
+                        timer: 1500
+                    })
+                    props.onClose('success')
                 }
             }
             else{
@@ -88,15 +94,16 @@ function CategoryAddForm(onClose) {
             <div className="tab-content" id="myTabContent">
                 <div className="tab-pane  py-4 fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div className="form-group mb-3">
-                        <label>Slug</label>
-                        <input type="text" name="slug" onChange={handleInput} value={categoryInput.slug} className="form-control" />
-                        <span className='text-danger'>{categoryInput.error_list.slug}</span>
-                    </div>
-                    <div className="form-group mb-3">
                         <label>Name</label>
                         <input type="text" name="name" onChange={handleInput} value={categoryInput.name} className="form-control" />
                         <span className='text-danger'>{categoryInput.error_list.name}</span>
                     </div>
+                    <div className="form-group mb-3">
+                        <label>Slug</label>
+                        <input type="text" name="slug" onChange={handleInput} value={categoryInput.slug} className="form-control" />
+                        <span className='text-danger'>{categoryInput.error_list.slug}</span>
+                    </div>
+                    
                     <div className="form-group mb-3">
                         <label>Description</label> 
                         <textarea name="description" onChange={handleInput} value={categoryInput.description} className="form-control"></textarea>
