@@ -15,7 +15,7 @@ function Navbar() {
             if(res.data.success){
                 localStorage.removeItem('__rea_token');
                 localStorage.removeItem('__rea_auth_name');
-                swal('Success', res.data.message, 'success');
+                swal({title: 'Success', text: res.data.message, icon: 'success', timer: 2000, buttons: false,}) ;
                 navigate('/login');
             }
         });

@@ -28,7 +28,7 @@ function Login() {
         if(res.data.success){
           localStorage.setItem('__rea_token', res.data.token);
           localStorage.setItem('__rea_auth_name', res.data.username);
-          swal('Success', res.data.message, 'success');
+          swal({title: 'Success', text: res.data.message, icon: 'success', timer: 2000, buttons: false,}) ;
           setTimeout(() => {
             if(res.data.role === 'admin'){
               navigate('/admin/dashboard');
@@ -44,7 +44,7 @@ function Login() {
             setloginInput({...loginInput, error_list: res.data.errors })
           }
           else{
-            swal('Error', res.data.message, 'error');
+            swal({title: 'Error', text: res.data.message, icon: 'error', timer: 2000, buttons: false, });
             setloginInput({...loginInput, isLoading: false, error_list: []})
           }
         }

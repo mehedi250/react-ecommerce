@@ -29,6 +29,21 @@ function CategoryAddForm(props) {
         setCategoryInput({...categoryInput, [e.target.name]: e.target.value})
     }
 
+    const handleName = (e) =>{
+        e.persist();
+        let tempSlug = e.target.value;
+        tempSlug = tempSlug.toString()
+        .normalize('NFD')                   // split an accented letter in the base letter and the acent
+        .replace(/[\u0300-\u036f]/g, '')   // remove all previously split accents
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9 ]/g, '')   // remove all chars not letters, numbers and spaces (to be replaced)
+        .replace(/\s+/g, '-');
+
+        const tempData = {name: e.target.value, slug: tempSlug};
+        setCategoryInput({...categoryInput, ...tempData})
+    }
+
     const handleStatus = () =>{
         setStatus(!status)
     }
@@ -64,7 +79,7 @@ function CategoryAddForm(props) {
                     setCategoryInput({...categoryInput, error_list: res.data.errors})
                 }
                 else{
-                    swal('Error', res.data.message, 'error');
+                    swal({title: 'Error', text: res.data.message, icon: 'error', timer: 2000, buttons: false, });
                 }
             }
         });
@@ -95,7 +110,7 @@ function CategoryAddForm(props) {
                 <div className="tab-pane  py-4 fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div className="form-group mb-3">
                         <label>Name</label>
-                        <input type="text" name="name" onChange={handleInput} value={categoryInput.name} className="form-control" />
+                        <input type="text" name="name" onChange={handleName} value={categoryInput.name} className="form-control" />
                         <span className='text-danger'>{categoryInput.error_list.name}</span>
                     </div>
                     <div className="form-group mb-3">

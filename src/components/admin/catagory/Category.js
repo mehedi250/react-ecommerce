@@ -66,7 +66,7 @@ function Category() {
             }
           }
           else{
-            swal('Error', res.data.message, 'error');
+            swal({title: 'Error', text: res.data.message, icon: 'error', timer: 2000, buttons: false, });
           }
         });
       } else {
@@ -162,7 +162,7 @@ function Category() {
       </div>
 
 
-      <Modal title={ categoryId !== 0 ?'Update Category': 'Add Catehory'} onClose={onClose} show={show}>
+      <Modal title={ categoryId !== 0 ?'Update Category': 'Add Category'} onClose={onClose} show={show}>
       { categoryId !== 0 ? <CategoryUpdateForm onClose={onClose} categoryId = {categoryId} />
         :
         <CategoryAddForm onClose={onClose} />

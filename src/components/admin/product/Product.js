@@ -55,12 +55,12 @@ function Product() {
         categoryDeleteApi(id).then(res => {
           if(res.data.success){
             if(res.data.status === 'success'){
-              swal('Success', res.data.message, 'success');
+              swal({title: 'Success', text: res.data.message, icon: 'success', timer: 2000, buttons: false,}) ;
               removeProduct(id)
             }
           }
           else{
-            swal('Error', res.data.message, 'error');
+            swal({title: 'Error', text: res.data.message, icon: 'error', timer: 2000, buttons: false, });
           }
         });
       } 
