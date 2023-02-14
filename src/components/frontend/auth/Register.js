@@ -52,7 +52,7 @@ function Register() {
         if(res.data.success){
           localStorage.setItem('__rea_token', res.data.token);
           localStorage.setItem('__rea_auth_name', res.data.username);
-          swal('Success', res.data.message, 'success');
+          swal({title: 'Success', text: res.data.message, icon: 'success', timer: 2000, buttons: false,}) ;
           setTimeout(() => {
             navigate('/');
           }, "1500");

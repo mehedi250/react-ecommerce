@@ -35,11 +35,11 @@ function CategoryUpdateForm(props) {
                     setStatus((res.data.data.status===1)?true:false)
                     setLoader(false);
                 }else{
-                    swal('Error', res.data.message, 'error');
+                    swal({title: 'Error', text: res.data.message, icon: 'error', timer: 2000, buttons: false, });
                 }
             }
             else{
-                swal('Error', res.data.message, 'error');
+                swal({title: 'Error', text: res.data.message, icon: 'error', timer: 2000, buttons: false, });
             }
         });
     }
@@ -96,7 +96,7 @@ function CategoryUpdateForm(props) {
                     setErrorList(res.data.errors)
                 }
                 else{
-                    swal('Error', res.data.message, 'error');
+                    swal({title: 'Error', text: res.data.message, icon: 'error', timer: 2000, buttons: false, });
                 }
             }
         });
