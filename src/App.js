@@ -13,6 +13,7 @@ import AdminRoute from './protectedRoute/AdminRoute';
 import Page404 from './layouts/error/Page404';
 import Category from './components/admin/catagory/Category';
 import Product from './components/admin/product/Product';
+import ViewCategory from './components/frontend/collections/ViewCategory';
 
 
 axios.defaults.baseURL = process.env.REACT_APP_BACKEND_ROOT_URL;
@@ -37,6 +38,7 @@ function App(props) {
             <Route path='' element={<Home />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
+            <Route path='/collections' element={<ViewCategory />} />
           </Route>
 
           {/* <Route path='/admin/' element={(localStorage.getItem('__rea_token'))?<AdminRoute/>:<Navigate replace to="/login" />} > */}
