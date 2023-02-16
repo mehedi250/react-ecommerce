@@ -8,8 +8,6 @@ import CategoryAddForm from './CategoryAddForm';
 import CategoryUpdateForm from './CategoryUpdateForm';
 import useDelayCallback from '../../helpers/useDelayCallback';
 
-
-
 function Category() {
   const [isLoading, setIsLoading] = useState(true);
   const [categoryList, setCategoryList] = useState([]);
@@ -121,7 +119,6 @@ function Category() {
       return view;
     }
   }
-
 
   return (
     <div className="container-fluid px-4">
