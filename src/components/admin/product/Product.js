@@ -135,7 +135,7 @@ function Product() {
         console.log('something is wrong' + error)
         
     });
-}
+  }
 
   return (
     <div className="container-fluid px-4">
