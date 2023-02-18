@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import swal from 'sweetalert';
+import './login.css';
 function Login() {
   const navigate = useNavigate()
   const [loginInput, setloginInput] = useState({

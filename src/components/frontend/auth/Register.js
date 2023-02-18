@@ -3,7 +3,7 @@ import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
-
+import './login.css';
 // import { registerApi } from '../../../service/serviceApi';
 
 function Register() {
