@@ -71,6 +71,7 @@
     margin-bottom: 20px;
   }
   .card-container .card-btn{
+    text-decoration: none;
     border: none;
     border-radius: 100px;
     padding: 5px 30px;
@@ -103,3 +104,5 @@
   .card-container .card-btn.four{
     background: linear-gradient(to left, var(--card4-gradient-color1), var(--card4-gradient-color2));
   }
+
+ 
