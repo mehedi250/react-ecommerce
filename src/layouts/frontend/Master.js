@@ -1,8 +1,9 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
-import '../../assets/frontend/css/style.css';
 import Footer from './Footer';
+import '../../assets/frontend/css/style.css';
+import '../../assets/frontend/css/skeleton.css';
 
 function Master() {
   return (
