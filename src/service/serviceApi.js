@@ -49,3 +49,7 @@ export const productUpdateApi = async (id, payload = []) => {
 export const categoryActiveListApi = async (payload = []) => {
     return sendRequest(POST, '/api/get-active-categories', payload);
 }
+
+export const categoryProductListApi = async (payload = []) => {
+    return sendRequest(POST, '/api/get-category-products', payload);
+}

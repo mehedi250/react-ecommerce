@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { categoryActiveListApi } from '../../../service/serviceApi';
 import useDelayCallback from '../../helpers/useDelayCallback';
-import CategoryCard from '../skeleton/CategoryCard';
+import SkeletonCategoryCard from '../skeleton/SkeletonCategoryCard';
+import CategoryCard from './CategoryCard';
+
 
 
 function ViewCategory(){
@@ -34,17 +35,8 @@ function ViewCategory(){
     categoryList.map((item, index) =>{
       let design = arr[index%4];
       view.push(
-        <div className="col-md-4 col-lg-3 card-container pb-4" key={item.id}>
-          <div className="card-wrap">
-            <div className={'card-head ' + design}>
-              <i className="fas fa-code"></i>
-            </div>
-            <div className="card-content">
-              <h1 className="card-title">{item.name}</h1>
-              <p className="card-text">{item.description}</p>
-              <Link to={'/'} className={'card-btn '+ design}>View Product</Link>
-            </div>
-          </div>  
+        <div className="col-md-4 col-lg-3 pb-4" key={item.id}>
+          <CategoryCard item={item} design={design} />
         </div>
       )
       return view;
@@ -63,8 +55,8 @@ function ViewCategory(){
 
     for(let i=0; i<8; i++){
        skeletonLoaderList.push(
-        <div className="col-md-4 col-lg-3 card-container pb-4" key={i}>
-          <CategoryCard  />
+        <div className="col-md-4 col-lg-3 pb-4" key={i}>
+          <SkeletonCategoryCard  />
         </div>
       );
     }
