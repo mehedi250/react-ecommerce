@@ -9,8 +9,8 @@ function Master() {
   return (
     <>
     <Navbar />
-    <div className="page-content" style={{minHeight: 'calc(100vh - 125px'}}>
-        <Outlet />
+    <div className="page-content" style={{minHeight: 'calc(100vh - 136px'}}>
+      <Outlet />
     </div>
     <Footer />
     </>

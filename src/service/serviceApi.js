@@ -53,3 +53,7 @@ export const categoryActiveListApi = async (payload = []) => {
 export const categoryProductListApi = async (payload = []) => {
     return sendRequest(POST, '/api/get-category-products', payload);
 }
+
+export const productDataApi = async (payload = []) => {
+    return sendRequest(POST, '/api/get-product-data', payload);
+}
