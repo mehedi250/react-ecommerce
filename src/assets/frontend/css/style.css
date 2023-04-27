@@ -105,4 +105,15 @@
     background: linear-gradient(to left, var(--card4-gradient-color1), var(--card4-gradient-color2));
   }
 
+  .header-avatar{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 1px solid white;
+    background: rgb(196, 196, 196);
+    display: grid;
+    place-items: center;
+    text-transform: uppercase;
+  }
+
  
