@@ -9,7 +9,7 @@ function CategoryProduct() {
     const params = useParams();
     const [isLoading, setIsLoading] = useState(true);
     const [productList, seProductList] = useState([]);
-    const [name, seName] = useState('');
+    const [category, setCategory] = useState({});
 
     useDelayCallback(() => {
         getProductList();
@@ -21,7 +21,7 @@ function CategoryProduct() {
                 if (res.data.status === 'success') {
 
                     seProductList(res.data.data)
-                    seName(res.data.name)
+                    setCategory(res.data.category)
                 }
             }
             else {
@@ -41,7 +41,7 @@ function CategoryProduct() {
                             <img src={process.env.REACT_APP_BACKEND_ROOT_URL + item.image} className="w-100" alt={item.name} />
                         </Link>
                         <div className="card-body">
-                            <Link to={`/product/${item.slug}`}>
+                            <Link to={`/collections/product/${category.slug}/${item.slug}`}>
                                 <h5>{item.name}</h5>
                             </Link>
                         </div>
@@ -54,7 +54,7 @@ function CategoryProduct() {
         }else{
             return (
                 <div className="text-center py-3">
-                    <h5>No Product Available for {name}!</h5>
+                    <h5>No Product Available for {category.name}!</h5>
                 </div>
             )
         }
@@ -79,7 +79,7 @@ function CategoryProduct() {
         <>
             <div className="bg-warning py-3">
                 <div className="container">
-                    Collection/{name}
+                    Collection/{category.name}
                 </div>
             </div>
             <div className="container py-3">
