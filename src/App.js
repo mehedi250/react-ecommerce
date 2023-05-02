@@ -15,7 +15,7 @@ import Category from './components/admin/catagory/Category';
 import Product from './components/admin/product/Product';
 import ViewCategory from './components/frontend/collections/ViewCategory';
 import CategoryProduct from './components/frontend/collections/CategoryProduct';
-import ProductDetail from './components/frontend/product/ProductDetail';
+import CategoryProductDetail from './components/frontend/collections/CategoryProductDetail';
 
 
 axios.defaults.baseURL = process.env.REACT_APP_BACKEND_ROOT_URL;
@@ -42,7 +42,7 @@ function App(props) {
             <Route path='/register' element={<Register />} />
             <Route path='/collections' element={<ViewCategory />} />
             <Route path='/collections/category/:slug' element={<CategoryProduct />} />
-            <Route path='/product/:slug' element={<ProductDetail />} />
+            <Route path='/collections/product/:category/:slug' element={<CategoryProductDetail />} />
           </Route>
 
           {/* <Route path='/admin/' element={(localStorage.getItem('__rea_token'))?<AdminRoute/>:<Navigate replace to="/login" />} > */}
