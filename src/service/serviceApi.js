@@ -61,3 +61,7 @@ export const productDataApi = async (payload = []) => {
 export const addTochartApi = async (payload = []) => {
     return sendRequest(POST, '/api/user/add-to-cart', payload);
 }
+
+export const cartListApi = async (payload = []) => {
+    return sendRequest(POST, '/api/get-cart-list', payload);
+}

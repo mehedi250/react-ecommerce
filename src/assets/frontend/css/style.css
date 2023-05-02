@@ -116,4 +116,6 @@
     text-transform: uppercase;
   }
 
- 
+  .display-linebreak {
+    white-space: pre-line;
+  }

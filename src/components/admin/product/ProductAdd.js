@@ -32,6 +32,8 @@ function ProductAdd(props) {
     const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
     const [picture, setPicture] = useState([]);
 
+    const randomNumber = Math.floor((Math.random() * 1000) + 1);
+
     useDelayCallback(() => {
         if(props.productId !== 0){
             loadData();
@@ -89,17 +91,25 @@ function ProductAdd(props) {
 
     const handleName = (e) =>{
         e.persist();
-        let tempSlug = e.target.value;
-        tempSlug = tempSlug.toString()
-        .normalize('NFD')                   // split an accented letter in the base letter and the acent
-        .replace(/[\u0300-\u036f]/g, '')   // remove all previously split accents
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9 ]/g, '')   // remove all chars not letters, numbers and spaces (to be replaced)
-        .replace(/\s+/g, '-');
 
-        const tempData = {name: e.target.value, slug: tempSlug};
-        setProductInput({...productInput, ...tempData})
+        if(props.productId !== 0){
+            const tempData = {name: e.target.value};
+            setProductInput({...productInput, ...tempData})
+        }else{
+            let tempSlug = e.target.value;
+            tempSlug = tempSlug.toString()
+            .normalize('NFD')                   // split an accented letter in the base letter and the acent
+            .replace(/[\u0300-\u036f]/g, '')   // remove all previously split accents
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9 ]/g, '')   // remove all chars not letters, numbers and spaces (to be replaced)
+            .replace(/\s+/g, '-');
+
+            tempSlug = tempSlug + '-' + randomNumber;
+
+            const tempData = {name: e.target.value, slug: tempSlug};
+            setProductInput({...productInput, ...tempData})    
+        }
     }
 
     const handleUpdate = (formData) =>{

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import swal from 'sweetalert';
-import axios from 'axios';
 import { addTochartApi } from '../../../service/serviceApi';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function ProductDetail(props) {
     const [product, seProduct] = useState(props.product);
@@ -30,6 +30,9 @@ function ProductDetail(props) {
                 if(res.data.status === 'success'){
                     swal({title: 'Success', text: res.data.message, icon: 'success', timer: 2000, buttons: false,}) ;
                 }
+                else if(res.data.status === 'warning'){
+                    swal({title: 'Warning', text: res.data.message, icon: 'warning', timer: 2000, buttons: false,}) ;
+                }
             }
             else{
                 if(res.data.status === 'validation-error'){
@@ -57,7 +60,7 @@ function ProductDetail(props) {
                 <h4>{product.name}
                     <span className="float-end badge btn-sm btn-danger badge-pil">{product.brand}</span>
                 </h4>
-                <p>{product.description}</p>
+                <p className="display-linebreak">{product.description}</p>
                 <h4>
                     TK: {product.selling_price}
                     <s className="ms-2">TK: {product.original_price}</s>
@@ -79,7 +82,7 @@ function ProductDetail(props) {
                         </div>
 
                         <div className="col-md-3 mt-3">
-                            <button className="btn btn-primary w-100" onClick={submitAddtocart}>Add to Cart</button>
+                            <button className="btn btn-primary w-100" onClick={submitAddtocart}><FontAwesomeIcon icon="fa fa-cart-plus" /> Add to Cart</button>
                         </div>
                     </div>
                 </div>

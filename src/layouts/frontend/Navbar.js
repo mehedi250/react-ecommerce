@@ -2,6 +2,7 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import swal from 'sweetalert';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Navbar() {
     const navigate = useNavigate();
@@ -28,12 +29,14 @@ function Navbar() {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <Link className="nav-link active" aria-current="page" to="/">Home</Link>
+                            <Link className="nav-link" aria-current="page" to="/"><FontAwesomeIcon icon="fa fa-house" /> Home</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/collections">Collection</Link>
+                            <Link className="nav-link" to="/collections"><FontAwesomeIcon icon="fa fa-border-all" /> Collection</Link>
                         </li>
-
+                        <li className={`nav-item ${(localStorage.getItem('__rea_token')) ? '' : 'd-none'}`}>
+                            <Link className="nav-link" to="/cart"><FontAwesomeIcon icon="fa fa-cart-shopping" /> Cart</Link>
+                        </li>
                     </ul>
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0 ">
                         {(!localStorage.getItem('__rea_token')) &&
@@ -47,9 +50,6 @@ function Navbar() {
                             </>
                         }
 
-                        {/* <li className="nav-item">
-                        <button className="nav-link px-3 btn btn-logout" onClick={handleLogout}>Logout</button>
-                    </li> */}
                         <li className={`nav-item dropdown ${(localStorage.getItem('__rea_token')) ? '' : 'd-none'}`}>
                             <Link className="nav-link" id="navbarDropdown" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <div className="header-avatar">{userName.slice(0, 2)}</div>
