@@ -37,7 +37,7 @@ function CategoryProduct() {
             return (
                 <div className="col-md-3" key={index}>
                     <div className="card">
-                        <Link to={`/product/${item.slug}`}>
+                        <Link to={`/collections/product/${category.slug}/${item.slug}`}>
                             <img src={process.env.REACT_APP_BACKEND_ROOT_URL + item.image} className="w-100" alt={item.name} />
                         </Link>
                         <div className="card-body">
